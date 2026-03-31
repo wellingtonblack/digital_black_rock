@@ -1,0 +1,63 @@
+@use 'variables' as *;
+
+.clients-strip {
+  position: relative;
+  padding: 2rem 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 212, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+  background: $bg-primary;
+
+  &__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8rem;
+    z-index: 10;
+    pointer-events: none;
+
+    &--left {
+      left: 0;
+      background: linear-gradient(to right, $bg-primary, transparent);
+    }
+
+    &--right {
+      right: 0;
+      background: linear-gradient(to left, $bg-primary, transparent);
+    }
+  }
+
+  &__track {
+    display: flex;
+    width: max-content;
+    animation: scroll-left 30s linear infinite;
+
+    &:hover { animation-play-state: paused; }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 2rem;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    color: $text-secondary;
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: default;
+    transition: color 0.2s ease;
+
+    &:hover { color: $accent-cyan; }
+  }
+
+  &__sep {
+    color: rgba(0, 212, 255, 0.3);
+    font-size: 1.25rem;
+  }
+}

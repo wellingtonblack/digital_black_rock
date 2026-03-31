@@ -1,0 +1,78 @@
+@use 'variables' as *;
+
+.services {
+  padding: 8rem 0;
+  position: relative;
+  background: $bg-secondary;
+
+  &__grid {
+    display: grid;
+    gap: 2rem;
+
+    @media (min-width: $md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: $lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+.service-card {
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &__accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover &__accent { opacity: 1; }
+
+  &__icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover &__icon { transform: scale(1.1); }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 1rem;
+  }
+
+  &__desc {
+    color: $text-secondary;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  &__cta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s ease;
+
+    &:hover { gap: 0.75rem; }
+  }
+}

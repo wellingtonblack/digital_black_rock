@@ -1,0 +1,58 @@
+@use 'variables' as *;
+
+.about {
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+
+  &__grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+
+    @media (min-width: $md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: $lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__cta {
+    text-align: center;
+  }
+}
+
+.differential-card {
+  padding: 2rem;
+  text-align: center;
+
+  &__icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover &__icon {
+    transform: scale(1.1);
+  }
+
+  &__title {
+    font-weight: 700;
+    color: $text-primary;
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__desc {
+    color: $text-secondary;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}

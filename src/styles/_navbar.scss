@@ -1,0 +1,144 @@
+@use 'variables' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: all 0.3s ease;
+  padding: 1rem 0;
+
+  &--scrolled {
+    background: rgba(4, 8, 15, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+    padding: 0.5rem 0;
+  }
+
+  &__container {
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    text-decoration: none;
+
+    img {
+      height: 4rem;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+
+  &__links {
+    display: none;
+    align-items: center;
+    gap: 2.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (min-width: $md) {
+      display: flex;
+    }
+  }
+
+  &__link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-secondary;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: $accent-cyan;
+      transition: width 0.3s ease;
+    }
+
+    &:hover {
+      color: $text-primary;
+
+      &::after { width: 100%; }
+    }
+  }
+
+  &__cta {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+
+    @media (min-width: $md) {
+      display: flex;
+    }
+  }
+
+  &__toggle {
+    display: flex;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+
+    @media (min-width: $md) {
+      display: none;
+    }
+  }
+}
+
+// Mobile menu overlay
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(4, 8, 15, 0.98);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  transition: all 0.3s ease;
+
+  &--hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__link {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover { color: $accent-cyan; }
+  }
+}
+
+@media (min-width: $md) {
+  .mobile-menu { display: none; }
+}

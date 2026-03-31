@@ -1,0 +1,100 @@
+@use 'variables' as *;
+
+.platforms {
+  padding: 8rem 0;
+  position: relative;
+  background: $bg-primary;
+
+  &__grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    &--top {
+      @media (min-width: $md) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    &--bottom {
+      @media (min-width: $md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+.platform-card {
+  padding: 2rem;
+  text-align: center;
+
+  &__logo-wrap {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    width: 100%;
+    max-width: 200px;
+    height: 6rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: rgba(0, 212, 255, 0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(0,212,255,0.15);
+    }
+  }
+
+  &__tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 100px;
+    margin-bottom: 0.75rem;
+  }
+
+  &__name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  &__desc {
+    color: $text-secondary;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  // Horizontal variant for bottom 2
+  &--horizontal {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: left;
+    padding: 2rem;
+  }
+
+  &--horizontal &__logo-wrap {
+    flex-shrink: 0;
+    width: 7rem;
+    height: 5rem;
+    max-width: 7rem;
+    margin: 0;
+  }
+
+  &--horizontal &__content {
+    flex: 1;
+  }
+
+  &--horizontal &__name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
