@@ -28,9 +28,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check build output
+        run: |
+          echo "=== Checking out directory ==="
+          ls -la out/ || echo "ERROR: out/ directory not found!"
+          echo "=== Secrets check ==="
+          echo "CLOUDFLARE_API_TOKEN set: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}"
+          echo "CLOUDFLARE_ACCOUNT_ID set: ${{ secrets.CLOUDFLARE_ACCOUNT_ID != '' }}"
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy out --project-name=digital-black-rock
+          command: pages deploy out --project-name=digital-black-rock --branch=main
