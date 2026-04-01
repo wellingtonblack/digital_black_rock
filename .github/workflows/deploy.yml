@@ -1,2 +1,0 @@
-# Deploy handled natively by Cloudflare Pages GitHub integration.
-# No GitHub Actions needed — Cloudflare builds and deploys automatically on push to main.
