@@ -68,14 +68,16 @@ export default function Footer() {
             </ul>
             <h4 className="footer__contact-title">Contato</h4>
             <p className="footer__contact-text">atendimento@digitalblackrock.com.br</p>
-            <p className="footer__contact-text">(11) 96968-3162</p>
+            <p className="footer__contact-text">
+              <a href="tel:5511969683162" target="_blank" rel="noopener noreferrer">(11) 96968-3162</a>
+            </p>
           </div>
         </div>
 
         <div className="divider-line" style={{ marginBottom: "2rem" }} />
         <div className="footer__bottom">
-          <p>© {new Date().getFullYear()} Digital Black Rock. Todos os direitos reservados.</p>
-          <p>Desenvolvido com <span style={{ color: "#00D4FF" }}>♥</span> em São Paulo, Brasil</p>
+          <p>© {new Date().getFullYear()} Digital Black Rock. Todos os direitos reservados. <br /> CNPJ: 52.523.259/0001-10</p>
+          <p>Desenvolvido por <span style={{ color: "#00D4FF" }}>Digital Black Rock</span> em São Paulo, Brasil</p>
         </div>
       </div>
     </footer>
