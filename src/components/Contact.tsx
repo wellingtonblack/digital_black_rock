@@ -1,7 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Mail, MessageCircle, Send, MapPin, CheckCircle } from "lucide-react";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const infoCardVariants = {
+  hidden: { opacity: 0, y: 36 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
+};
+
+const infoContainerVariants = {
+  hidden: {},
+  show:   { transition: { staggerChildren: 0.1 } },
+};
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", service: "", message: "" });
@@ -32,7 +45,14 @@ export default function Contact() {
       <div className="grid-pattern" style={{ position: "absolute", inset: 0, opacity: 0.3 }} />
 
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
-        <div className="section__header">
+
+        <motion.div
+          className="section__header"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease }}
+        >
           <span className="section__tag">
             <Mail size={12} />
             Contato
@@ -44,11 +64,19 @@ export default function Contact() {
           <p className="section__subtitle">
             Preencha o formulário e nossa equipe entrará em contato em até 24 horas.
           </p>
-        </div>
+        </motion.div>
 
         <div className="contact__grid">
-          <div className="contact__info">
-            <div className="glass-card contact-card">
+
+          {/* Left column — slides from left */}
+          <motion.div
+            className="contact__info"
+            variants={infoContainerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+          >
+            <motion.div className="glass-card contact-card" variants={infoCardVariants}>
               <div className="contact-card__icon" style={{ background: "rgba(37,211,102,0.15)" }}>
                 <MessageCircle size={22} style={{ color: "#25D366" }} />
               </div>
@@ -63,9 +91,9 @@ export default function Contact() {
                 </a>
                 <div className="contact-card__note">Resposta rápida</div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card contact-card">
+            <motion.div className="glass-card contact-card" variants={infoCardVariants}>
               <div className="contact-card__icon" style={{ background: "rgba(0,212,255,0.1)" }}>
                 <Mail size={22} style={{ color: "#00D4FF" }} />
               </div>
@@ -80,9 +108,9 @@ export default function Contact() {
                 </a>
                 <div className="contact-card__note">Resposta em até 24h</div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card contact-card">
+            <motion.div className="glass-card contact-card" variants={infoCardVariants}>
               <div className="contact-card__icon" style={{ background: "rgba(123,97,255,0.1)" }}>
                 <MapPin size={22} style={{ color: "#7B61FF" }} />
               </div>
@@ -91,9 +119,13 @@ export default function Contact() {
                 <div className="contact-card__value" style={{ color: "#8B9CB8" }}>São Paulo, SP — Brasil</div>
                 <div className="contact-card__note">Atendimento nacional</div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card contact-card" style={{ flexDirection: "column", alignItems: "flex-start" }}>
+            <motion.div
+              className="glass-card contact-card"
+              style={{ flexDirection: "column", alignItems: "flex-start" }}
+              variants={infoCardVariants}
+            >
               <div className="contact-card__title">Atendimento de excelência</div>
               <div style={{ display: "flex", gap: "4px", margin: "0.5rem 0" }}>
                 {[1,2,3,4,5].map((s) => <span key={s} style={{ color: "#FBBF24", fontSize: "1.125rem" }}>★</span>)}
@@ -102,10 +134,16 @@ export default function Contact() {
                 &ldquo;A Digital Black Rock transformou completamente nossa operação de e-commerce. Profissionalismo e resultados reais.&rdquo;
               </p>
               <p style={{ color: "#00D4FF", fontSize: "0.875rem", marginTop: "0.75rem", fontWeight: 600 }}>— Cliente satisfeito</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div>
+          {/* Right column — slides from bottom */}
+          <motion.div
+            initial={{ opacity: 0, y: 48 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.75, delay: 0.15, ease }}
+          >
             {sent ? (
               <div className="glass-card contact-success">
                 <div className="contact-success__icon">
@@ -175,7 +213,8 @@ export default function Contact() {
                 <p className="contact-form__note">Ao enviar, você será redirecionado para o WhatsApp</p>
               </form>
             )}
-          </div>
+          </motion.div>
+
         </div>
       </div>
     </section>

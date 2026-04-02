@@ -49,13 +49,19 @@
     }
   }
 
-  &__content {
+  &__parallax-wrap {
     position: relative;
     z-index: 10;
+    width: 100%;
+    will-change: transform, opacity;
+  }
+
+  &__content {
     max-width: 64rem;
     margin: 0 auto;
     padding: 9rem 1.5rem 6rem;
     text-align: center;
+    will-change: transform;
   }
 
   &__badges {

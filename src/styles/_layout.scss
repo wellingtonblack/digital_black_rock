@@ -1,5 +1,11 @@
 @use 'variables' as *;
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 .container {
   max-width: $max-width;
   margin-left: auto;
