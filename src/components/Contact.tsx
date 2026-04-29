@@ -156,29 +156,29 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="glass-card contact-form">
                 <div className="contact-form__grid">
                   <div className="contact-form__field">
-                    <label className="contact-form__label">Nome *</label>
-                    <input type="text" name="name" value={form.name} onChange={handleChange} required placeholder="Seu nome completo" className="form-input" />
+                    <label htmlFor="contact-name" className="contact-form__label">Nome *</label>
+                    <input id="contact-name" type="text" name="name" value={form.name} onChange={handleChange} required placeholder="Seu nome completo" className="form-input" />
                   </div>
                   <div className="contact-form__field">
-                    <label className="contact-form__label">E-mail *</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} required placeholder="seu@email.com" className="form-input" />
+                    <label htmlFor="contact-email" className="contact-form__label">E-mail *</label>
+                    <input id="contact-email" type="email" name="email" value={form.email} onChange={handleChange} required placeholder="seu@email.com" className="form-input" />
                   </div>
                 </div>
 
                 <div className="contact-form__grid">
                   <div className="contact-form__field">
-                    <label className="contact-form__label">Telefone / WhatsApp</label>
-                    <input type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder="(11) 99999-9999" className="form-input" />
+                    <label htmlFor="contact-phone" className="contact-form__label">Telefone / WhatsApp</label>
+                    <input id="contact-phone" type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder="(11) 99999-9999" className="form-input" />
                   </div>
                   <div className="contact-form__field">
-                    <label className="contact-form__label">Empresa</label>
-                    <input type="text" name="company" value={form.company} onChange={handleChange} placeholder="Nome da sua empresa" className="form-input" />
+                    <label htmlFor="contact-company" className="contact-form__label">Empresa</label>
+                    <input id="contact-company" type="text" name="company" value={form.company} onChange={handleChange} placeholder="Nome da sua empresa" className="form-input" />
                   </div>
                 </div>
 
                 <div className="contact-form__field">
-                  <label className="contact-form__label">Serviço de Interesse</label>
-                  <select name="service" value={form.service} onChange={handleChange} className="form-input">
+                  <label htmlFor="contact-service" className="contact-form__label">Serviço de Interesse</label>
+                  <select id="contact-service" name="service" value={form.service} onChange={handleChange} className="form-input">
                     <option value="" style={{ background: "#0C1525" }}>Selecione um serviço</option>
                     <option value="Consultoria de E-commerce" style={{ background: "#0C1525" }}>Consultoria de E-commerce</option>
                     <option value="Implementação de E-commerce" style={{ background: "#0C1525" }}>Implementação de E-commerce</option>
@@ -190,8 +190,8 @@ export default function Contact() {
                 </div>
 
                 <div className="contact-form__field">
-                  <label className="contact-form__label">Mensagem</label>
-                  <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Conte-nos sobre seu projeto ou dúvida..." className="form-input" style={{ resize: "none" }} />
+                  <label htmlFor="contact-message" className="contact-form__label">Mensagem</label>
+                  <textarea id="contact-message" name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Conte-nos sobre seu projeto ou dúvida..." className="form-input" style={{ resize: "none" }} />
                 </div>
 
                 <button type="submit" disabled={loading} className={`btn btn--primary contact-form__submit${loading ? " btn--disabled" : ""}`}

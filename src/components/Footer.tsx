@@ -22,19 +22,23 @@ export default function Footer() {
             </p>
             <div className="footer__social">
               <a href="https://wa.me/5511969683162" target="_blank" rel="noopener noreferrer"
+                aria-label="WhatsApp"
                 className="footer__social-link"
                 style={{ background: "rgba(37,211,102,0.1)", border: "1px solid rgba(37,211,102,0.2)", color: "#25D366" }}
               >
-                <MessageCircle size={18} />
+                <MessageCircle size={18} aria-hidden="true" />
               </a>
               <a href="mailto:atendimento@digitalblackrock.com.br"
+                aria-label="E-mail"
                 className="footer__social-link"
                 style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)", color: "#00D4FF" }}
               >
-                <Mail size={18} />
+                <Mail size={18} aria-hidden="true" />
               </a>
-              <a href="https://www.instagram.com/digitalblackrock/" target="_blank" rel="noopener noreferrer" className="footer__social-link"
-                style={{ background: "rgba(225,48,108,0.1)", border: "1px solid rgba(225,48,108,0.2)", color: "#E1306C" }}
+              <a href="https://www.instagram.com/digitalblackrock/" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="footer__social-link"
+                style={{ background: "rgba(225,48,108,0.15)", border: "1px solid rgba(225,48,108,0.3)", color: "#FF6B9D" }}
               >
                 IG
               </a>
@@ -49,7 +53,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="footer__nav-title">Serviços</h4>
+            <p className="footer__nav-title">Serviços</p>
             <ul className="footer__nav-list">
               {links.servicos.map((s) => (
                 <li key={s}>
@@ -60,7 +64,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="footer__nav-title">Plataformas</h4>
+            <p className="footer__nav-title">Plataformas</p>
             <ul className="footer__nav-list" style={{ marginBottom: "2rem" }}>
               {links.plataformas.map((p) => (
                 <li key={p}>
@@ -68,7 +72,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <h4 className="footer__contact-title">Contato</h4>
+            <p className="footer__contact-title">Contato</p>
             <p className="footer__contact-text">atendimento@digitalblackrock.com.br</p>
             <p className="footer__contact-text">
               <a href="tel:5511969683162" target="_blank" rel="noopener noreferrer">(11) 96968-3162</a>
