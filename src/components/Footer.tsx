@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="footer__container">
         <div className="footer__grid">
           <div className="footer__brand">
-            <Image src="/assets/logos/logo-dark.png" alt="Digital Black Rock" width={160} height={64} />
+            <Image src="/assets/logos/logo-dark.png" alt="Digital Black Rock" width={160} height={64} style={{ height: "4rem", width: "auto" }} />
             <p className="footer__tagline">
               Consultoria e desenvolvimento de e-commerces de alta performance. Transformamos sua
               presença digital em resultados reais e mensuráveis.
@@ -33,16 +33,18 @@ export default function Footer() {
               >
                 <Mail size={18} />
               </a>
-              <a href="https://www.instagram.com/digitalblackrock/" className="footer__social-link"
+              <a href="https://www.instagram.com/digitalblackrock/" target="_blank" rel="noopener noreferrer" className="footer__social-link"
                 style={{ background: "rgba(225,48,108,0.1)", border: "1px solid rgba(225,48,108,0.2)", color: "#E1306C" }}
               >
                 IG
               </a>
-              <a href="#" className="footer__social-link"
+              {/* LinkedIn — adicionar URL quando disponível
+              <a href="https://linkedin.com/company/digital-black-rock" target="_blank" rel="noopener noreferrer" className="footer__social-link"
                 style={{ background: "rgba(10,102,194,0.1)", border: "1px solid rgba(10,102,194,0.2)", color: "#0A66C2" }}
               >
                 in
               </a>
+              */}
             </div>
           </div>
 

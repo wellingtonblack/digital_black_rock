@@ -5,6 +5,7 @@ import ClientsStrip from "@/components/ClientsStrip";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import Platforms from "@/components/Platforms";
+import Clients from "@/components/Clients";
 import CtaBanner from "@/components/CtaBanner";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -21,6 +22,7 @@ export default function Home() {
         <About />
         <Services />
         <Platforms />
+        <Clients />
         <CtaBanner />
         <Contact />
       </main>

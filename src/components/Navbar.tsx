@@ -34,6 +34,7 @@ export default function Navbar() {
               width={180}
               height={72}
               priority
+              style={{ height: "4rem", width: "auto" }}
             />
           </Link>
 

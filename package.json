@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "generate-og": "node scripts/generate-og.mjs",
     "deploy:cf": "next build && wrangler pages deploy out --project-name=digital-black-rock",
     "deploy:vercel": "vercel --prod"
   },
@@ -24,6 +25,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "sass": "^1.98.0",
+    "sharp": "^0.34.5",
     "typescript": "^5",
     "wrangler": "^4.79.0"
   }

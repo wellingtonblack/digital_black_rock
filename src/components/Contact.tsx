@@ -133,7 +133,7 @@ export default function Contact() {
               <p style={{ color: "#8B9CB8", fontSize: "1rem", lineHeight: 1.6 }}>
                 &ldquo;A Digital Black Rock transformou completamente nossa operação de e-commerce. Profissionalismo e resultados reais.&rdquo;
               </p>
-              <p style={{ color: "#00D4FF", fontSize: "0.875rem", marginTop: "0.75rem", fontWeight: 600 }}>— Cliente satisfeito</p>
+              <p style={{ color: "#00D4FF", fontSize: "0.875rem", marginTop: "0.75rem", fontWeight: 600 }}>— CEO, Arena Plata</p>
             </motion.div>
           </motion.div>
 

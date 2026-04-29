@@ -97,7 +97,7 @@ export default function Platforms() {
           {platforms.slice(0, 3).map((p) => (
             <motion.div key={p.name} className="glass-card platform-card" variants={cardVariants}>
               <motion.div className="platform-card__logo-wrap" variants={logoVariants}>
-                <Image src={p.logo} alt={p.name} width={200} height={80} style={{ objectFit: "contain", maxHeight: "5.5rem", maxWidth: "190px" }} />
+                <Image src={p.logo} alt={p.name} width={200} height={80} style={{ objectFit: "contain", maxHeight: "5.5rem", maxWidth: "190px", width: "auto", height: "auto" }} />
               </motion.div>
               <span
                 className="platform-card__tag"
@@ -121,7 +121,7 @@ export default function Platforms() {
           {platforms.slice(3).map((p) => (
             <motion.div key={p.name} className="glass-card platform-card platform-card--horizontal" variants={cardVariants}>
               <motion.div className="platform-card__logo-wrap" variants={logoVariants}>
-                <Image src={p.logo} alt={p.name} width={140} height={65} style={{ objectFit: "contain", maxHeight: "4.5rem", maxWidth: "130px" }} />
+                <Image src={p.logo} alt={p.name} width={140} height={65} style={{ objectFit: "contain", maxHeight: "4.5rem", maxWidth: "130px", width: "auto", height: "auto" }} />
               </motion.div>
               <div className="platform-card__content">
                 <div className="platform-card__name-row">
