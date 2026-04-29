@@ -1,0 +1,20 @@
+# Copie este arquivo para .dev.vars e preencha com seus valores reais.
+# .dev.vars é usado pelo Wrangler para teste local e está no .gitignore.
+
+# Neon PostgreSQL — obrigatório para salvar leads
+# console.neon.tech → seu projeto → Connection Details → Connection string
+DATABASE_URL=postgresql://usuario:senha@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+
+# Google PageSpeed API — recomendado (sem ela: limite ~400 req/dia)
+# console.cloud.google.com → APIs & Services → Credentials → Create API Key
+# Ative: PageSpeed Insights API
+PAGESPEED_API_KEY=AIzaSy...
+
+# Anthropic — opcional, ativa diagnóstico comercial com IA
+# console.anthropic.com → API Keys → Create Key
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Notificação de novo lead — opcional
+# URL de um webhook (Discord, Make, Zapier, n8n, etc.)
+# Discord: Server Settings → Integrations → Webhooks → New Webhook → Copy URL
+NOTIFICATION_WEBHOOK_URL=https://discord.com/api/webhooks/...

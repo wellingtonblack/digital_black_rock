@@ -1,0 +1,690 @@
+@use 'variables' as *;
+
+// ─── Site Audit Landing Page ───────────────────────────────────────────────
+
+.audit {
+  min-height: 100vh;
+  background: $bg-primary;
+  padding-top: 6rem;
+  padding-bottom: 8rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+// ─── Hero ──────────────────────────────────────────────────────────────────
+
+.audit-hero {
+  padding: 4rem 0 3rem;
+  text-align: center;
+  position: relative;
+
+  &__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+
+    &--cyan {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.12) 0%, transparent 70%);
+      top: -100px;
+      left: 50%;
+      transform: translateX(-60%);
+    }
+
+    &--purple {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(123, 97, 255, 0.1) 0%, transparent 70%);
+      top: 0;
+      right: -80px;
+    }
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $accent-cyan;
+    margin-bottom: 1.5rem;
+  }
+
+  &__title {
+    font-size: clamp(1.75rem, 4.5vw, 3.25rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    color: $text-primary;
+  }
+
+  &__subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: $text-secondary;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+  }
+
+  // URL input box
+  &__url-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+
+    @media (min-width: $md) {
+      flex-direction: row;
+    }
+  }
+
+  &__url-input {
+    flex: 1;
+    background: rgba(12, 21, 37, 0.9);
+    border: 1.5px solid rgba(0, 212, 255, 0.25);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+
+    &:focus {
+      border-color: rgba(0, 212, 255, 0.6);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+    }
+
+    &::placeholder {
+      color: rgba(139, 156, 184, 0.55);
+    }
+
+    &--error {
+      border-color: rgba(255, 80, 80, 0.6);
+      box-shadow: 0 0 0 3px rgba(255, 80, 80, 0.1);
+    }
+  }
+
+  &__url-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  &__url-error {
+    font-size: 0.875rem;
+    color: #FF6B6B;
+    text-align: left;
+    margin-top: -4px;
+  }
+
+  &__trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  &__trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: $text-secondary;
+    font-weight: 500;
+  }
+}
+
+// ─── Lead Form ─────────────────────────────────────────────────────────────
+
+.audit-form {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  &__card {
+    padding: 2.5rem 2rem;
+    border-radius: 1.25rem;
+
+    @media (min-width: $md) {
+      padding: 2.5rem;
+    }
+  }
+
+  &__url-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 212, 255, 0.06);
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 1.75rem;
+    font-size: 0.9rem;
+    color: $accent-cyan;
+    word-break: break-all;
+  }
+
+  &__title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtitle {
+    font-size: 0.95rem;
+    color: $text-secondary;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  &__field {
+    margin-bottom: 1.25rem;
+  }
+
+  &__label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 6px;
+  }
+
+  &__lgpd {
+    font-size: 0.78rem;
+    color: rgba(139, 156, 184, 0.7);
+    line-height: 1.5;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $accent-cyan;
+    }
+  }
+}
+
+// ─── Loading ───────────────────────────────────────────────────────────────
+
+.audit-loading {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+
+  &__card {
+    padding: 3rem 2rem;
+    border-radius: 1.25rem;
+  }
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(123, 97, 255, 0.15));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(0, 212, 255, 0.2);
+    border-top-color: $accent-cyan;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  &__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtitle {
+    font-size: 0.95rem;
+    color: $text-secondary;
+    line-height: 1.6;
+  }
+
+  &__steps {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: $text-secondary;
+    transition: color 0.4s;
+
+    &--active {
+      color: $accent-cyan;
+    }
+
+    &--done {
+      color: #25D366;
+    }
+  }
+
+  &__step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(139, 156, 184, 0.3);
+    flex-shrink: 0;
+    transition: background 0.4s;
+
+    .audit-loading__step--active & {
+      background: $accent-cyan;
+      box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    }
+
+    .audit-loading__step--done & {
+      background: #25D366;
+    }
+  }
+}
+
+// ─── Results ───────────────────────────────────────────────────────────────
+
+.audit-result {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  &__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  &__title {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 900;
+    color: $text-primary;
+    margin-bottom: 0.75rem;
+  }
+
+  &__url-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 212, 255, 0.06);
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.875rem;
+    color: $accent-cyan;
+  }
+
+  // Score grid
+  &__scores {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: $md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__score-card {
+    padding: 1.5rem 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    cursor: default;
+  }
+
+  &__score-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $text-secondary;
+    margin-bottom: 0.75rem;
+  }
+
+  &__score-ring {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 0.75rem;
+    position: relative;
+
+    svg {
+      transform: rotate(-90deg);
+    }
+  }
+
+  &__score-number {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: $text-primary;
+  }
+
+  &__score-status {
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    &--critical { color: #FF6B6B; }
+    &--warning  { color: #FBBF24; }
+    &--good     { color: #25D366; }
+  }
+
+  // Vitals row
+  &__vitals {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__vital-card {
+    padding: 1.25rem 1rem;
+    border-radius: 1rem;
+    text-align: center;
+  }
+
+  &__vital-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $text-secondary;
+    margin-bottom: 6px;
+  }
+
+  &__vital-value {
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin-bottom: 2px;
+
+    &--critical { color: #FF6B6B; }
+    &--warning  { color: #FBBF24; }
+    &--good     { color: #25D366; }
+  }
+
+  &__vital-name {
+    font-size: 0.7rem;
+    color: rgba(139, 156, 184, 0.6);
+  }
+
+  // Platform
+  &__platform {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(123, 97, 255, 0.08);
+    border: 1px solid rgba(123, 97, 255, 0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    color: $accent-purple;
+    margin-bottom: 1.5rem;
+  }
+
+  // AI Summary / commercial diagnosis
+  &__diagnosis {
+    padding: 1.75rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 212, 255, 0.04);
+    border: 1px solid rgba(0, 212, 255, 0.12);
+  }
+
+  &__diagnosis-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__diagnosis-text {
+    font-size: 0.95rem;
+    color: $text-secondary;
+    line-height: 1.75;
+  }
+
+  // Issues & recommendations
+  &__section-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__issues {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  &__issue {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    background: rgba(255, 107, 107, 0.05);
+    border: 1px solid rgba(255, 107, 107, 0.15);
+    font-size: 0.9rem;
+    color: $text-secondary;
+    line-height: 1.5;
+
+    &--warning {
+      background: rgba(251, 191, 36, 0.05);
+      border-color: rgba(251, 191, 36, 0.2);
+    }
+  }
+
+  &__recs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  &__rec {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    background: rgba(37, 211, 102, 0.05);
+    border: 1px solid rgba(37, 211, 102, 0.15);
+    font-size: 0.9rem;
+    color: $text-secondary;
+    line-height: 1.5;
+  }
+}
+
+// ─── CTA ───────────────────────────────────────────────────────────────────
+
+.audit-cta {
+  max-width: 680px;
+  margin: 2rem auto 0;
+  padding: 0 1.5rem;
+
+  &__card {
+    padding: 2.5rem 2rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(123, 97, 255, 0.06));
+    border: 1px solid rgba(0, 212, 255, 0.2);
+
+    @media (min-width: $md) {
+      padding: 3rem;
+    }
+  }
+
+  &__title {
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    font-weight: 900;
+    color: $text-primary;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: $text-secondary;
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25D366;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+    font-family: inherit;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(37, 211, 102, 0.45);
+      background: #20BA5C;
+    }
+  }
+
+  &__note {
+    font-size: 0.8rem;
+    color: rgba(139, 156, 184, 0.6);
+    margin-top: 1rem;
+  }
+
+  &__actions {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  &__share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: $text-secondary;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+
+    &:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      color: $accent-cyan;
+      background: rgba(0, 212, 255, 0.06);
+    }
+
+    &--copied {
+      border-color: rgba(37, 211, 102, 0.35);
+      color: #25D366;
+      background: rgba(37, 211, 102, 0.06);
+    }
+  }
+}
+
+// ─── Error state ────────────────────────────────────────────────────────────
+
+.audit-error {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+
+  &__card {
+    padding: 3rem 2rem;
+    border-radius: 1.25rem;
+    border-color: rgba(255, 107, 107, 0.2);
+  }
+
+  &__icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  &__message {
+    font-size: 0.95rem;
+    color: $text-secondary;
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+  }
+}

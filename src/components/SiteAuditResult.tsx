@@ -1,0 +1,230 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { AlertTriangle, CheckCircle, Globe, Cpu, XCircle } from "lucide-react";
+import type { AuditResult } from "@/types/audit";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 32 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } },
+};
+const containerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
+function scoreColor(score: number) {
+  if (score < 50) return "#FF6B6B";
+  if (score < 75) return "#FBBF24";
+  return "#25D366";
+}
+
+function scoreStatus(score: number): { label: string; cls: string } {
+  if (score < 50) return { label: "Crítico", cls: "critical" };
+  if (score < 75) return { label: "Atenção", cls: "warning" };
+  return { label: "Bom", cls: "good" };
+}
+
+function vitalStatus(metric: string, value: string): string {
+  const n = parseFloat(value);
+  if (metric === "lcp") return n > 4 ? "critical" : n > 2.5 ? "warning" : "good";
+  if (metric === "cls") return n > 0.25 ? "critical" : n > 0.1 ? "warning" : "good";
+  if (metric === "inp") return n > 500 ? "critical" : n > 200 ? "warning" : "good";
+  return "good";
+}
+
+interface ScoreRingProps {
+  score: number;
+  size?: number;
+}
+
+function ScoreRing({ score, size = 72 }: ScoreRingProps) {
+  const r = (size - 8) / 2;
+  const circ = 2 * Math.PI * r;
+  const fill = (score / 100) * circ;
+  const color = scoreColor(score);
+
+  return (
+    <div className="audit-result__score-ring" style={{ width: size, height: size }}>
+      <svg width={size} height={size}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={6} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth={6}
+          strokeDasharray={`${fill} ${circ}`}
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="audit-result__score-number">{score}</span>
+    </div>
+  );
+}
+
+interface Props {
+  result: AuditResult;
+  url: string;
+}
+
+export default function SiteAuditResult({ result, url }: Props) {
+  const displayUrl = url.replace(/^https?:\/\//, "");
+
+  const scores = [
+    { key: "performance", label: "Performance", value: result.performance_score },
+    { key: "seo", label: "SEO", value: result.seo_score },
+    { key: "accessibility", label: "Acessibilidade", value: result.accessibility_score },
+    { key: "best_practices", label: "Boas Práticas", value: result.best_practices_score },
+  ];
+
+  return (
+    <div className="audit-result">
+      <motion.div
+        className="audit-result__header"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease }}
+      >
+        <h2 className="audit-result__title">
+          Diagnóstico de{" "}
+          <span className="gradient-text">performance e conversão</span>
+        </h2>
+        <div className="audit-result__url-badge">
+          <Globe size={13} />
+          {displayUrl}
+        </div>
+        {result.platform_detected && (
+          <div style={{ marginTop: "0.75rem" }}>
+            <span className="audit-result__platform">
+              <Cpu size={13} />
+              Plataforma detectada: {result.platform_detected}
+            </span>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Score cards */}
+      <motion.div
+        className="audit-result__scores"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
+        {scores.map(({ key, label, value }) => {
+          const status = scoreStatus(value);
+          return (
+            <motion.div key={key} className="glass-card audit-result__score-card" variants={cardVariants}>
+              <div className="audit-result__score-label">{label}</div>
+              <ScoreRing score={value} />
+              <div className={`audit-result__score-status audit-result__score-status--${status.cls}`}>
+                {status.label}
+              </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      {/* Core Web Vitals */}
+      {(result.lcp || result.cls || result.inp) && (
+        <motion.div
+          className="audit-result__vitals"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.2, ease }}
+        >
+          {result.lcp && (
+            <div className="glass-card audit-result__vital-card">
+              <div className="audit-result__vital-label">LCP</div>
+              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("lcp", result.lcp)}`}>
+                {result.lcp}s
+              </div>
+              <div className="audit-result__vital-name">Maior Conteúdo</div>
+            </div>
+          )}
+          {result.cls && (
+            <div className="glass-card audit-result__vital-card">
+              <div className="audit-result__vital-label">CLS</div>
+              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("cls", result.cls)}`}>
+                {result.cls}
+              </div>
+              <div className="audit-result__vital-name">Estabilidade Visual</div>
+            </div>
+          )}
+          {result.inp && (
+            <div className="glass-card audit-result__vital-card">
+              <div className="audit-result__vital-label">INP</div>
+              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("inp", result.inp)}`}>
+                {result.inp}ms
+              </div>
+              <div className="audit-result__vital-name">Interatividade</div>
+            </div>
+          )}
+        </motion.div>
+      )}
+
+      {/* Commercial diagnosis */}
+      {result.ai_summary && (
+        <motion.div
+          className="audit-result__diagnosis"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.3, ease }}
+        >
+          <div className="audit-result__diagnosis-title">
+            <AlertTriangle size={16} style={{ color: "#FBBF24" }} />
+            Diagnóstico comercial
+          </div>
+          <p className="audit-result__diagnosis-text">{result.ai_summary}</p>
+        </motion.div>
+      )}
+
+      {/* Issues */}
+      {result.issues && result.issues.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.35, ease }}
+        >
+          <div className="audit-result__section-title">
+            <XCircle size={16} style={{ color: "#FF6B6B" }} />
+            Principais problemas
+          </div>
+          <div className="audit-result__issues">
+            {result.issues.map((issue, i) => (
+              <div key={i} className={`audit-result__issue${issue.severity === "warning" ? " audit-result__issue--warning" : ""}`}>
+                <AlertTriangle size={15} style={{ color: issue.severity === "warning" ? "#FBBF24" : "#FF6B6B", flexShrink: 0, marginTop: 2 }} />
+                {issue.description}
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Recommendations */}
+      {result.recommendations && result.recommendations.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.4, ease }}
+        >
+          <div className="audit-result__section-title">
+            <CheckCircle size={16} style={{ color: "#25D366" }} />
+            Recomendações práticas
+          </div>
+          <div className="audit-result__recs">
+            {result.recommendations.map((rec, i) => (
+              <div key={i} className="audit-result__rec">
+                <CheckCircle size={15} style={{ color: "#25D366", flexShrink: 0, marginTop: 2 }} />
+                {rec}
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
