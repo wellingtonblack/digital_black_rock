@@ -3,6 +3,16 @@ export interface AuditIssue {
   description: string;
 }
 
+export interface StrategyScores {
+  performance: number;
+  seo: number;
+  accessibility: number;
+  best_practices: number;
+  lcp?: string;
+  cls?: string;
+  inp?: string;
+}
+
 export interface AuditResult {
   performance_score: number;
   seo_score: number;
@@ -11,6 +21,8 @@ export interface AuditResult {
   lcp?: string;
   cls?: string;
   inp?: string;
+  mobile?: StrategyScores;
+  desktop?: StrategyScores;
   platform_detected?: string;
   ai_summary?: string;
   issues?: AuditIssue[];

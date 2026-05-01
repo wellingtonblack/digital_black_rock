@@ -57,7 +57,7 @@ export default function SiteAuditCta({ url, onReset, result }: Props) {
 
         <a href={waLink} target="_blank" rel="noopener noreferrer" className="audit-cta__btn">
           <MessageCircle size={20} />
-          Falar com especialista no WhatsApp
+          Quero corrigir isso agora
         </a>
 
         <p className="audit-cta__note">

@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, CheckCircle, Globe, Cpu, XCircle } from "lucide-react";
-import type { AuditResult } from "@/types/audit";
+import { AlertTriangle, CheckCircle, Globe, Cpu, XCircle, Smartphone, Monitor } from "lucide-react";
+import type { AuditResult, StrategyScores } from "@/types/audit";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -35,12 +36,7 @@ function vitalStatus(metric: string, value: string): string {
   return "good";
 }
 
-interface ScoreRingProps {
-  score: number;
-  size?: number;
-}
-
-function ScoreRing({ score, size = 72 }: ScoreRingProps) {
+function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
   const r = (size - 8) / 2;
   const circ = 2 * Math.PI * r;
   const fill = (score / 100) * circ;
@@ -51,14 +47,9 @@ function ScoreRing({ score, size = 72 }: ScoreRingProps) {
       <svg width={size} height={size}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={6} />
         <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke={color}
-          strokeWidth={6}
-          strokeDasharray={`${fill} ${circ}`}
-          strokeLinecap="round"
+          cx={size / 2} cy={size / 2} r={r}
+          fill="none" stroke={color} strokeWidth={6}
+          strokeDasharray={`${fill} ${circ}`} strokeLinecap="round"
         />
       </svg>
       <span className="audit-result__score-number">{score}</span>
@@ -73,12 +64,28 @@ interface Props {
 
 export default function SiteAuditResult({ result, url }: Props) {
   const displayUrl = url.replace(/^https?:\/\//, "");
+  const hasAny  = !!(result.mobile || result.desktop);
+  const [activeTab, setActiveTab] = useState<"mobile" | "desktop">(
+    result.mobile ? "mobile" : "desktop"
+  );
+
+  const activeData = activeTab === "mobile" ? result.mobile : result.desktop;
+
+  const viewScores: StrategyScores = activeData ?? (result.mobile ?? result.desktop ?? {
+    performance:    result.performance_score,
+    seo:            result.seo_score,
+    accessibility:  result.accessibility_score,
+    best_practices: result.best_practices_score,
+    lcp: result.lcp,
+    cls: result.cls,
+    inp: result.inp,
+  });
 
   const scores = [
-    { key: "performance", label: "Performance", value: result.performance_score },
-    { key: "seo", label: "SEO", value: result.seo_score },
-    { key: "accessibility", label: "Acessibilidade", value: result.accessibility_score },
-    { key: "best_practices", label: "Boas Práticas", value: result.best_practices_score },
+    { key: "performance",    label: "Performance",    value: viewScores.performance },
+    { key: "seo",            label: "SEO",            value: viewScores.seo },
+    { key: "accessibility",  label: "Acessibilidade", value: viewScores.accessibility },
+    { key: "best_practices", label: "Boas Práticas",  value: viewScores.best_practices },
   ];
 
   return (
@@ -107,8 +114,40 @@ export default function SiteAuditResult({ result, url }: Props) {
         )}
       </motion.div>
 
+      {/* Tabs Mobile / Desktop */}
+      {hasAny && (
+        <motion.div
+          className="audit-result__tabs"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease }}
+        >
+          <button
+            type="button"
+            className={`audit-result__tab${activeTab === "mobile" ? " audit-result__tab--active" : ""}${!result.mobile ? " audit-result__tab--disabled" : ""}`}
+            onClick={() => result.mobile && setActiveTab("mobile")}
+            title={!result.mobile ? "Site muito lento para medir no mobile" : undefined}
+          >
+            <Smartphone size={14} />
+            Mobile
+            {!result.mobile && <span className="audit-result__tab-na">N/D</span>}
+          </button>
+          <button
+            type="button"
+            className={`audit-result__tab${activeTab === "desktop" ? " audit-result__tab--active" : ""}${!result.desktop ? " audit-result__tab--disabled" : ""}`}
+            onClick={() => result.desktop && setActiveTab("desktop")}
+            title={!result.desktop ? "Dados de desktop indisponíveis" : undefined}
+          >
+            <Monitor size={14} />
+            Desktop
+            {!result.desktop && <span className="audit-result__tab-na">N/D</span>}
+          </button>
+        </motion.div>
+      )}
+
       {/* Score cards */}
       <motion.div
+        key={activeTab}
         className="audit-result__scores"
         variants={containerVariants}
         initial="hidden"
@@ -129,36 +168,37 @@ export default function SiteAuditResult({ result, url }: Props) {
       </motion.div>
 
       {/* Core Web Vitals */}
-      {(result.lcp || result.cls || result.inp) && (
+      {(viewScores.lcp || viewScores.cls || viewScores.inp) && (
         <motion.div
+          key={`vitals-${activeTab}`}
           className="audit-result__vitals"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.2, ease }}
         >
-          {result.lcp && (
+          {viewScores.lcp && (
             <div className="glass-card audit-result__vital-card">
               <div className="audit-result__vital-label">LCP</div>
-              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("lcp", result.lcp)}`}>
-                {result.lcp}s
+              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("lcp", viewScores.lcp)}`}>
+                {viewScores.lcp}s
               </div>
               <div className="audit-result__vital-name">Maior Conteúdo</div>
             </div>
           )}
-          {result.cls && (
+          {viewScores.cls && (
             <div className="glass-card audit-result__vital-card">
               <div className="audit-result__vital-label">CLS</div>
-              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("cls", result.cls)}`}>
-                {result.cls}
+              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("cls", viewScores.cls)}`}>
+                {viewScores.cls}
               </div>
               <div className="audit-result__vital-name">Estabilidade Visual</div>
             </div>
           )}
-          {result.inp && (
+          {viewScores.inp && (
             <div className="glass-card audit-result__vital-card">
               <div className="audit-result__vital-label">INP</div>
-              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("inp", result.inp)}`}>
-                {result.inp}ms
+              <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("inp", viewScores.inp)}`}>
+                {viewScores.inp}ms
               </div>
               <div className="audit-result__vital-name">Interatividade</div>
             </div>
@@ -178,7 +218,15 @@ export default function SiteAuditResult({ result, url }: Props) {
             <AlertTriangle size={16} style={{ color: "#FBBF24" }} />
             Diagnóstico comercial
           </div>
-          <p className="audit-result__diagnosis-text">{result.ai_summary}</p>
+          {result.ai_summary
+            // garante quebra de parágrafo antes de emojis após pontuação
+            .replace(/([.!?…])\s+([⚠️💸🚀])/gu, "$1\n\n$2")
+            .split(/\n+/)
+            .map(p => p.trim())
+            .filter(Boolean)
+            .map((para, i) => (
+              <p key={i} className="audit-result__diagnosis-text">{para}</p>
+            ))}
         </motion.div>
       )}
 

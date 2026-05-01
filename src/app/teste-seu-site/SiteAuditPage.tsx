@@ -10,20 +10,9 @@ import SiteAuditLoading from "@/components/SiteAuditLoading";
 import SiteAuditResult from "@/components/SiteAuditResult";
 import SiteAuditCta from "@/components/SiteAuditCta";
 import type { AuditResult, AnalyzeResponse } from "@/types/audit";
+import { getFirstTouch, getLastTouch } from "@/lib/attribution";
 
 type Stage = "idle" | "collectingLead" | "loading" | "success" | "error";
-
-function readUtms() {
-  if (typeof window === "undefined") return {};
-  const p = new URLSearchParams(window.location.search);
-  return {
-    utm_source: p.get("utm_source") ?? undefined,
-    utm_medium: p.get("utm_medium") ?? undefined,
-    utm_campaign: p.get("utm_campaign") ?? undefined,
-    utm_content: p.get("utm_content") ?? undefined,
-    utm_term: p.get("utm_term") ?? undefined,
-  };
-}
 
 export default function SiteAuditPage() {
   const [stage, setStage] = useState<Stage>("idle");
@@ -45,13 +34,24 @@ export default function SiteAuditPage() {
 
   async function handleLeadSubmit(lead: { name: string; email: string; phone: string }) {
     setStage("loading");
-    const utms = readUtms();
+    const firstTouch = getFirstTouch();
+    const lastTouch  = getLastTouch();
 
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, ...lead, ...utms }),
+        body: JSON.stringify({
+          url,
+          ...lead,
+          utm_source:   lastTouch?.utm_source,
+          utm_medium:   lastTouch?.utm_medium,
+          utm_campaign: lastTouch?.utm_campaign,
+          utm_content:  lastTouch?.utm_content,
+          utm_term:     lastTouch?.utm_term,
+          first_touch:  firstTouch ?? undefined,
+          last_touch:   lastTouch  ?? undefined,
+        }),
       });
 
       const data: AnalyzeResponse = await res.json();
@@ -64,6 +64,17 @@ export default function SiteAuditPage() {
 
       setResult(data.result);
       setStage("success");
+
+      // GTM event for conversion tracking
+      const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
+      if (Array.isArray(w.dataLayer)) {
+        w.dataLayer.push({
+          event: "lead_completed",
+          lead_url: url,
+          first_touch: firstTouch ?? undefined,
+          last_touch:  lastTouch  ?? undefined,
+        });
+      }
     } catch {
       setErrorMsg("Não foi possível conectar ao servidor. Tente novamente em alguns minutos.");
       setStage("error");

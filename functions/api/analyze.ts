@@ -21,6 +21,8 @@ interface LeadBody {
   utm_campaign?: string;
   utm_content?: string;
   utm_term?: string;
+  first_touch?: Record<string, unknown>;
+  last_touch?: Record<string, unknown>;
 }
 
 // ─── URL safety ───────────────────────────────────────────────────────────────
@@ -70,10 +72,14 @@ interface PageSpeedResult {
   raw?: unknown;
 }
 
-async function runPageSpeed(url: string, apiKey?: string): Promise<PageSpeedResult | null> {
+async function fetchPageSpeedStrategy(
+  url: string,
+  strategy: "mobile" | "desktop",
+  apiKey?: string
+): Promise<PageSpeedResult | null> {
   const base = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
   const finalUrl =
-    `${base}?url=${encodeURIComponent(url)}&strategy=mobile` +
+    `${base}?url=${encodeURIComponent(url)}&strategy=${strategy}` +
     `&category=performance&category=seo&category=accessibility&category=best-practices` +
     (apiKey ? `&key=${apiKey}` : "");
 
@@ -230,13 +236,64 @@ function buildLocalDiagnosis(
 // ─── AI diagnosis (opcional) ──────────────────────────────────────────────────
 
 async function buildAiDiagnosis(
-  env: Env, perf: number, seo: number, access: number, bp: number,
+  env: Env, url: string, perf: number, seo: number, access: number, bp: number,
   lcp?: string, cls?: string, inp?: string
 ): Promise<string | null> {
-  const prompt =
-    `Você é consultor de e-commerce. Com base nos dados abaixo, escreva um parágrafo curto (2-4 frases) em português do Brasil com diagnóstico comercial — fale sobre impacto nas vendas, abandono de carrinho e campanhas pagas. Não use linguagem técnica excessiva.\n\n` +
-    `Performance: ${perf}/100\nSEO: ${seo}/100\nAcessibilidade: ${access}/100\nBoas práticas: ${bp}/100\n` +
-    `LCP: ${lcp ?? "N/A"}s | CLS: ${cls ?? "N/A"} | INP: ${inp ?? "N/A"}ms\n\nDiagnóstico:`;
+  const prompt = `Você é um especialista em CRO (Conversion Rate Optimization), performance web e vendas em e-commerce. Seu objetivo é convencer o dono do site de que ele está perdendo dinheiro e precisa agir — não apenas descrever dados.
+
+DADOS DO SITE:
+- URL: ${url}
+- Performance: ${perf}/100
+- SEO: ${seo}/100
+- Acessibilidade: ${access}/100
+- Boas práticas: ${bp}/100
+- LCP (tempo até o maior conteúdo aparecer): ${lcp ?? "N/A"}s
+- CLS (saltos de layout): ${cls ?? "N/A"}
+- INP (resposta ao toque): ${inp ?? "N/A"}ms
+
+REGRAS DE CONTEÚDO:
+- Seja direto e conecte cada problema com perda de dinheiro
+- Use frases como: "cada visitante perdido representa dinheiro desperdiçado", "isso impacta diretamente seu faturamento", "esse problema pode já estar afetando suas vendas sem que você perceba"
+- Se LCP > 3s → problema crítico de velocidade, cite o valor exato
+- Se Performance < 70 → alto risco financeiro
+- Se Performance ≥ 80 → reconheça o bom resultado, mas mostre oportunidades ocultas de conversão
+- Sempre mencione impacto em mobile e em campanhas pagas (tráfego pago)
+- Gere urgência real, sem soar como spam
+
+ESTRUTURA OBRIGATÓRIA (7 blocos curtos, cada um = 1 parágrafo de 2 a 3 frases):
+
+1. Linha de alerta — começa com ⚠️, resume o risco financeiro em 1 frase
+2. Diagnóstico principal — explica o problema mais grave em linguagem simples, cita o número (ex: LCP de Xs)
+3. Consequência prática — o que acontece com o usuário mobile e com quem veio de anúncio
+4. Impacto financeiro direto — começa com 💸, conecta o problema com dinheiro perdido/desperdiçado
+5. Dado de referência — cite um estudo ou benchmark real (ex: "cada segundo a mais de carregamento reduz a conversão em até 20%")
+6. Oportunidade — começa com 🚀, mostra que é possível melhorar sem investir mais em anúncios
+7. Gancho final — 1 frase que separa lojas que convertem das que só recebem visitas
+
+TOM: Profissional, direto, focado em resultado. Sem exagero.
+
+FORMATAÇÃO:
+- Separe cada bloco com linha em branco (\\n\\n)
+- NÃO use markdown, asteriscos, negrito, hashtag ou títulos de seção
+- Apenas texto corrido por bloco — cada bloco é um parágrafo
+- Exatamente 7 parágrafos
+
+EXEMPLO DE SAÍDA ESPERADA (adapte aos dados reais, não copie):
+⚠️ Seu site pode estar perdendo vendas todos os dias — mesmo com boas notas técnicas.
+
+Apesar de um bom desempenho em SEO e acessibilidade, existe um ponto crítico que impacta diretamente seu faturamento: o tempo de carregamento. Seu LCP está em 5.2s — isso significa que a maioria dos visitantes precisa esperar muito mais do que o ideal para ver sua oferta principal.
+
+Na prática, isso eleva a taxa de abandono, especialmente no mobile, onde a paciência do usuário é ainda menor. Cada visitante que sai antes de carregar é uma oportunidade de venda perdida.
+
+💸 Se você investe em tráfego pago, esse impacto é ainda mais caro: cada clique que abandona antes de carregar representa dinheiro desperdiçado diretamente no seu bolso.
+
+Estudos mostram que cada segundo adicional de carregamento pode reduzir a conversão em até 20% — e esse cenário provavelmente já está afetando suas vendas sem que você perceba.
+
+🚀 A boa notícia é que esse é um problema altamente otimizável. Ajustes pontuais de performance podem recuperar vendas perdidas e aumentar sua conversão sem precisar investir mais em anúncios.
+
+Esse tipo de melhoria é o que separa lojas que apenas recebem visitas daquelas que realmente transformam tráfego em faturamento.
+
+RESPOSTA DEVE SER EM PORTUGUÊS DO BRASIL.`;
 
   if (env.ANTHROPIC_API_KEY) {
     try {
@@ -249,10 +306,10 @@ async function buildAiDiagnosis(
         },
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
-          max_tokens: 300,
+          max_tokens: 700,
           messages: [{ role: "user", content: prompt }],
         }),
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(20_000),
       });
       if (res.ok) {
         const data = await res.json() as { content: { text: string }[] };
@@ -271,10 +328,10 @@ async function buildAiDiagnosis(
         },
         body: JSON.stringify({
           model: "gpt-4o-mini",
-          max_tokens: 300,
+          max_tokens: 700,
           messages: [{ role: "user", content: prompt }],
         }),
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(20_000),
       });
       if (res.ok) {
         const data = await res.json() as { choices: { message: { content: string } }[] };
@@ -350,7 +407,7 @@ async function saveLead(
 ): Promise<string | null> {
   try {
     const rows = await sql`
-      INSERT INTO leads (name, email, phone, url, utm_source, utm_medium, utm_campaign, utm_content, utm_term, status)
+      INSERT INTO leads (name, email, phone, url, utm_source, utm_medium, utm_campaign, utm_content, utm_term, first_touch, last_touch, status)
       VALUES (
         ${body.name},
         ${body.email},
@@ -361,6 +418,8 @@ async function saveLead(
         ${body.utm_campaign ?? null},
         ${body.utm_content ?? null},
         ${body.utm_term ?? null},
+        ${body.first_touch ? JSON.stringify(body.first_touch) : null},
+        ${body.last_touch  ? JSON.stringify(body.last_touch)  : null},
         'new'
       )
       RETURNING id
@@ -420,8 +479,8 @@ const CORS_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export const onRequestPost: (ctx: { request: Request; env: Env }) => Promise<Response> =
-  async ({ request, env }) => {
+export const onRequestPost: (ctx: { request: Request; env: Env; waitUntil: (p: Promise<unknown>) => void }) => Promise<Response> =
+  async ({ request, env, waitUntil }) => {
     // Payload size guard (~10 KB)
     const contentLength = parseInt(request.headers.get("content-length") ?? "0", 10);
     if (contentLength > 10_240) {
@@ -457,11 +516,14 @@ export const onRequestPost: (ctx: { request: Request; env: Env }) => Promise<Res
     }
     const cleanUrl = safeCheck.url!.href;
 
-    // PageSpeed + platform detection in parallel
-    const [psResult, platform] = await Promise.all([
-      runPageSpeed(cleanUrl, env.PAGESPEED_API_KEY),
+    // PageSpeed mobile + desktop + platform — tudo em paralelo
+    const [mobileResult, desktopResult, platform] = await Promise.all([
+      fetchPageSpeedStrategy(cleanUrl, "mobile",  env.PAGESPEED_API_KEY),
+      fetchPageSpeedStrategy(cleanUrl, "desktop", env.PAGESPEED_API_KEY),
       detectPlatform(cleanUrl),
     ]);
+
+    const primaryResult = mobileResult ?? desktopResult;
 
     // Always save the lead — even if PageSpeed fails
     let leadId: string | null = null;
@@ -471,10 +533,10 @@ export const onRequestPost: (ctx: { request: Request; env: Env }) => Promise<Res
     }
 
     if (env.NOTIFICATION_WEBHOOK_URL) {
-      void notifyLead(env.NOTIFICATION_WEBHOOK_URL, body, cleanUrl, psResult);
+      waitUntil(notifyLead(env.NOTIFICATION_WEBHOOK_URL, body, cleanUrl, primaryResult));
     }
 
-    if (!psResult) {
+    if (!primaryResult) {
       // Site too slow to analyze — still return a result so the user sees value
       const slowDiagnosis = {
         performance_score:    0,
@@ -502,33 +564,45 @@ export const onRequestPost: (ctx: { request: Request; env: Env }) => Promise<Res
     }
 
     const localDiagnosis = buildLocalDiagnosis(
-      psResult.performance, psResult.seo, psResult.accessibility, psResult.best_practices,
-      psResult.lcp, psResult.cls, psResult.inp
+      primaryResult.performance, primaryResult.seo, primaryResult.accessibility, primaryResult.best_practices,
+      primaryResult.lcp, primaryResult.cls, primaryResult.inp
     );
 
     const aiSummary = await buildAiDiagnosis(
-      env,
-      psResult.performance, psResult.seo, psResult.accessibility, psResult.best_practices,
-      psResult.lcp, psResult.cls, psResult.inp
+      env, cleanUrl,
+      primaryResult.performance, primaryResult.seo, primaryResult.accessibility, primaryResult.best_practices,
+      primaryResult.lcp, primaryResult.cls, primaryResult.inp
     );
 
     // Save audit (non-blocking)
     if (env.DATABASE_URL && leadId) {
       const sql = neon(env.DATABASE_URL);
-      void saveAudit(sql, leadId, cleanUrl, psResult, platform, localDiagnosis, aiSummary);
+      waitUntil(saveAudit(sql, leadId, cleanUrl, primaryResult, platform, localDiagnosis, aiSummary));
     }
+
+    const toStrategy = (r: PageSpeedResult) => ({
+      performance:    r.performance,
+      seo:            r.seo,
+      accessibility:  r.accessibility,
+      best_practices: r.best_practices,
+      lcp: r.lcp,
+      cls: r.cls,
+      inp: r.inp,
+    });
 
     return new Response(
       JSON.stringify({
         success: true,
         result: {
-          performance_score:    psResult.performance,
-          seo_score:            psResult.seo,
-          accessibility_score:  psResult.accessibility,
-          best_practices_score: psResult.best_practices,
-          lcp:                  psResult.lcp,
-          cls:                  psResult.cls,
-          inp:                  psResult.inp,
+          performance_score:    primaryResult.performance,
+          seo_score:            primaryResult.seo,
+          accessibility_score:  primaryResult.accessibility,
+          best_practices_score: primaryResult.best_practices,
+          lcp:                  primaryResult.lcp,
+          cls:                  primaryResult.cls,
+          inp:                  primaryResult.inp,
+          mobile:               mobileResult  ? toStrategy(mobileResult)  : undefined,
+          desktop:              desktopResult ? toStrategy(desktopResult) : undefined,
           platform_detected:    platform,
           ai_summary:           aiSummary ?? localDiagnosis.ai_summary,
           issues:               localDiagnosis.issues,

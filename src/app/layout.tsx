@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.scss";
+import UtmTracker from "@/components/UtmTracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -153,6 +154,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         {/* End Google Tag Manager (noscript) */}
+        <UtmTracker />
         {children}
       </body>
     </html>

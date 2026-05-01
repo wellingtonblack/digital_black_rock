@@ -357,6 +357,54 @@
     color: $accent-cyan;
   }
 
+  // Mobile / Desktop tabs
+  &__tabs {
+    display: flex;
+    gap: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3px;
+    margin: 0 auto 2rem;
+    width: fit-content;
+  }
+
+  &__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+
+    &--active {
+      background: rgba(0, 212, 255, 0.1);
+      color: $accent-cyan;
+    }
+
+    &--disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &__tab-na {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: 2px;
+  }
+
   // Score grid
   &__scores {
     display: grid;
@@ -491,6 +539,11 @@
     font-size: 0.95rem;
     color: $text-secondary;
     line-height: 1.75;
+    margin: 0;
+
+    & + & {
+      margin-top: 0.85rem;
+    }
   }
 
   // Issues & recommendations
