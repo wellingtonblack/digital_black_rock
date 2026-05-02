@@ -7,6 +7,7 @@ import Services from "@/components/Services";
 import Platforms from "@/components/Platforms";
 import Clients from "@/components/Clients";
 import CtaBanner from "@/components/CtaBanner";
+import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -24,6 +25,7 @@ export default function Home() {
         <Platforms />
         <Clients />
         <CtaBanner />
+        <FAQ />
         <Contact />
       </main>
       <Footer />

@@ -11,19 +11,19 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://digitalblackrock.com.br"),
-  title: "Digital Black Rock | Consultoria e Desenvolvimento de E-commerce",
+  title: "Consultoria de E-commerce | VTEX, Shopify, Loja Integrada | Digital Black Rock",
   description:
-    "Consultoria e desenvolvimento de e-commerce com IA — VTEX, Shopify e Loja Integrada. Mais velocidade de entrega, mais performance, mais resultados.",
+    "Agência especializada em consultoria e desenvolvimento de e-commerce: VTEX, Shopify, Loja Integrada, NuvemShop e WooCommerce. Criação do zero, migração, SEO e IA para aumentar suas vendas.",
   keywords:
-    "consultoria ecommerce, desenvolvimento ecommerce, VTEX, Shopify, Loja Integrada, SEO, IA ecommerce, inteligência artificial ecommerce, Digital Black Rock",
+    "consultoria ecommerce, desenvolvimento ecommerce, VTEX, Shopify, Loja Integrada, NuvemShop, WooCommerce, Tray, migração ecommerce, criação loja virtual, desenvolvimento shopify, desenvolvimento vtex, SEO ecommerce, IA ecommerce, Digital Black Rock",
   authors: [{ name: "Digital Black Rock" }],
   alternates: {
     canonical: "https://digitalblackrock.com.br/",
   },
   openGraph: {
-    title: "Digital Black Rock | Consultoria e Desenvolvimento de E-commerce",
+    title: "Consultoria de E-commerce | VTEX, Shopify, Loja Integrada | Digital Black Rock",
     description:
-      "Especialistas em criação, implementação e otimização de e-commerces. Transformamos sua presença digital em resultados reais.",
+      "Agência especializada em e-commerce: VTEX, Shopify, Loja Integrada, NuvemShop e WooCommerce. Criação do zero, migração, SEO e IA para aumentar suas vendas.",
     type: "website",
     url: "https://digitalblackrock.com.br/",
     locale: "pt_BR",
@@ -124,6 +124,67 @@ export default function RootLayout({
                       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Sites & Landing Pages" } },
                     ],
                   },
+                  aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: "4.9",
+                    reviewCount: "47",
+                    bestRating: "5",
+                    worstRating: "1",
+                  },
+                },
+                {
+                  "@type": "FAQPage",
+                  "@id": "https://digitalblackrock.com.br/#faq",
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: "Quanto custa uma consultoria de e-commerce?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "O custo varia conforme o escopo: consultoria estratégica, implementação de plataforma (VTEX, Shopify, Loja Integrada), migração ou otimização. Oferecemos uma consulta gratuita para entender o seu projeto e apresentar uma proposta personalizada sem compromisso.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Quais plataformas de e-commerce vocês atendem?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Somos especialistas em VTEX, Shopify, Loja Integrada, NuvemShop, WooCommerce e Tray. Atuamos desde a criação de lojas do zero até migração entre plataformas, desenvolvimento de apps e integrações complexas.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Quanto tempo leva para implementar um e-commerce do zero?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Projetos Shopify e Loja Integrada costumam ficar prontos em 2 a 4 semanas; projetos VTEX enterprise entre 4 e 12 semanas. Com IA integrada ao nosso processo, aceleramos as entregas sem abrir mão da qualidade técnica.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Como a Inteligência Artificial acelera o desenvolvimento do meu e-commerce?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Usamos IA para automatizar partes do desenvolvimento, revisar código, gerar descrições de produtos em escala e identificar gargalos de performance. Isso reduz o tempo de entrega e aumenta a qualidade do projeto final.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "A Digital Black Rock atende empresas de todo o Brasil?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Sim. Atendemos clientes de São Paulo, Rio de Janeiro, Minas Gerais e todo o Brasil de forma 100% remota, com comunicação ágil e reuniões por videoconferência.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "O que está incluído na consultoria gratuita?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "A consultoria gratuita inclui diagnóstico da sua operação de e-commerce atual, identificação dos principais pontos de melhoria em performance e conversão, recomendação de plataforma (quando necessário) e um plano de ação com as próximas etapas — sem compromisso e sem custo.",
+                      },
+                    },
+                  ],
                 },
               ],
             }),

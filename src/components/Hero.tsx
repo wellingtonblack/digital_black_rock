@@ -149,11 +149,11 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.14, ease }}
           >
-            <span className="gradient-text-silver">Transformamos</span> seu negócio
+            <span className="gradient-text-silver">Consultoria</span> de E-commerce
             <br />
-            em uma <span className="gradient-text">máquina de vendas</span>
+            em <span className="gradient-text">VTEX, Shopify</span> e Loja Integrada
             <br />
-            no digital
+            que gera mais vendas com IA
           </motion.h1>
 
           <motion.p
@@ -162,11 +162,11 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.28, ease }}
           >
-            Consultoria especializada em{" "}
-            <strong style={{ color: "#fff" }}>VTEX, Shopify e Loja Integrada</strong> —
-            aliada a{" "}
+            Desenvolvimento, migração e otimização de lojas virtuais em{" "}
+            <strong style={{ color: "#fff" }}>VTEX, Shopify, Loja Integrada e NuvemShop</strong>{" "}
+            — com{" "}
             <strong style={{ color: "#7B61FF" }}>Inteligência Artificial</strong> para
-            acelerar entregas, elevar performance e escalar resultados.
+            entregar mais rápido e converter mais.
           </motion.p>
 
           <motion.div

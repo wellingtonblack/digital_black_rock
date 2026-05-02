@@ -34,6 +34,13 @@ const platforms = [
     tagColor: "#21759B",
   },
   {
+    name: "NuvemShop",
+    logo: "/assets/logos/nuvemshop.webp",
+    desc: "Plataforma ideal para lojistas que querem crescer rapidamente na América Latina, com ferramentas de marketing e vendas integradas.",
+    tag: "América Latina",
+    tagColor: "#00BFFF",
+  },
+  {
     name: "Tray",
     logo: "/assets/logos/tray.png",
     desc: "Plataforma nacional robusta para e-commerces em crescimento, com integrações nativas e infraestrutura preparada para alta demanda.",
@@ -119,22 +126,18 @@ export default function Platforms() {
           viewport={{ once: true, margin: "-80px" }}
         >
           {platforms.slice(3).map((p) => (
-            <motion.div key={p.name} className="glass-card platform-card platform-card--horizontal" variants={cardVariants}>
+            <motion.div key={p.name} className="glass-card platform-card" variants={cardVariants}>
               <motion.div className="platform-card__logo-wrap" variants={logoVariants}>
-                <Image src={p.logo} alt={p.name} width={140} height={65} style={{ objectFit: "contain", maxHeight: "4.5rem", maxWidth: "130px", width: "auto", height: "auto" }} />
+                <Image src={p.logo} alt={p.name} width={200} height={80} style={{ objectFit: "contain", maxHeight: "5.5rem", maxWidth: "190px", width: "auto", height: "auto" }} />
               </motion.div>
-              <div className="platform-card__content">
-                <div className="platform-card__name-row">
-                  <h3 className="platform-card__name">{p.name}</h3>
-                  <span
-                    className="platform-card__tag"
-                    style={{ background: `${p.tagColor}20`, color: p.tagColor }}
-                  >
-                    {p.tag}
-                  </span>
-                </div>
-                <p className="platform-card__desc">{p.desc}</p>
-              </div>
+              <span
+                className="platform-card__tag"
+                style={{ background: `${p.tagColor}20`, color: p.tagColor }}
+              >
+                {p.tag}
+              </span>
+              <h3 className="platform-card__name">{p.name}</h3>
+              <p className="platform-card__desc">{p.desc}</p>
             </motion.div>
           ))}
         </motion.div>
