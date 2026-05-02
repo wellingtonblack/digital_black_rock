@@ -35,7 +35,7 @@ const platforms = [
   },
   {
     name: "NuvemShop",
-    logo: "/assets/logos/nuvemshop.webp",
+    logo: "/assets/logos/nuvemshop-nuvemcommercer.jpg",
     desc: "Plataforma ideal para lojistas que querem crescer rapidamente na América Latina, com ferramentas de marketing e vendas integradas.",
     tag: "América Latina",
     tagColor: "#00BFFF",
