@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate-og": "node scripts/generate-og.mjs",
-    "deploy:cf": "next build && wrangler pages deploy out --project-name=digital-black-rock",
-    "deploy:vercel": "vercel --prod"
+    "deploy:cf": "next build && wrangler pages deploy out --project-name=digital-black-rock"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

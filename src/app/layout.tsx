@@ -53,6 +53,9 @@ export const metadata: Metadata = {
     apple: "/assets/logos/logo-full-2.png",
     shortcut: "/assets/logos/logo-full-2.png",
   },
+  verification: {
+    google: "qyh-CcyYZW8gEDqqxZAroirMecU42GfymNvztATAtqc",
+  },
 };
 
 export default function RootLayout({
