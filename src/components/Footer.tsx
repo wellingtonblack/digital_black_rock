@@ -21,7 +21,7 @@ export default function Footer() {
               presença digital em resultados reais e mensuráveis.
             </p>
             <div className="footer__social">
-              <a href="https://wa.me/5511969683162" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/5511974564248" target="_blank" rel="noopener noreferrer"
                 aria-label="WhatsApp"
                 className="footer__social-link"
                 style={{ background: "rgba(37,211,102,0.1)", border: "1px solid rgba(37,211,102,0.2)", color: "#25D366" }}
@@ -57,7 +57,7 @@ export default function Footer() {
             <ul className="footer__nav-list">
               {links.servicos.map((s) => (
                 <li key={s}>
-                  <a href="#servicos" className="footer__nav-link">{s}</a>
+                  <a href="/#servicos" className="footer__nav-link">{s}</a>
                 </li>
               ))}
             </ul>
@@ -68,21 +68,21 @@ export default function Footer() {
             <ul className="footer__nav-list" style={{ marginBottom: "2rem" }}>
               {links.plataformas.map((p) => (
                 <li key={p}>
-                  <a href="#plataformas" className="footer__nav-link">{p}</a>
+                  <a href="/#plataformas" className="footer__nav-link">{p}</a>
                 </li>
               ))}
             </ul>
             <p className="footer__contact-title">Contato</p>
             <p className="footer__contact-text">atendimento@digitalblackrock.com.br</p>
             <p className="footer__contact-text">
-              <a href="tel:5511969683162" target="_blank" rel="noopener noreferrer">(11) 96968-3162</a>
+              <a href="tel:5511974564248" target="_blank" rel="noopener noreferrer">(11) 97456-4248</a>
             </p>
           </div>
         </div>
 
         <div className="divider-line" style={{ marginBottom: "2rem" }} />
         <div className="footer__bottom">
-          <p>© {new Date().getFullYear()} Digital Black Rock. Todos os direitos reservados. <br /> CNPJ: 52.523.259/0001-10</p>
+          <p>© {new Date().getFullYear()} Digital Black Rock. Todos os direitos reservados.</p>
           <p>Desenvolvido por <span style={{ color: "#00D4FF" }}>Digital Black Rock</span> em São Paulo, Brasil</p>
         </div>
       </div>

@@ -516,6 +516,13 @@ export const onRequestPost: (ctx: { request: Request; env: Env; waitUntil: (p: P
     }
     const cleanUrl = safeCheck.url!.href;
 
+    // Save lead immediately — before any async analysis
+    let leadId: string | null = null;
+    if (env.DATABASE_URL) {
+      const sql = neon(env.DATABASE_URL);
+      leadId = await saveLead(sql, body, cleanUrl);
+    }
+
     // PageSpeed mobile + desktop + platform — tudo em paralelo
     const [mobileResult, desktopResult, platform] = await Promise.all([
       fetchPageSpeedStrategy(cleanUrl, "mobile",  env.PAGESPEED_API_KEY),
@@ -524,13 +531,6 @@ export const onRequestPost: (ctx: { request: Request; env: Env; waitUntil: (p: P
     ]);
 
     const primaryResult = mobileResult ?? desktopResult;
-
-    // Always save the lead — even if PageSpeed fails
-    let leadId: string | null = null;
-    if (env.DATABASE_URL) {
-      const sql = neon(env.DATABASE_URL);
-      leadId = await saveLead(sql, body, cleanUrl);
-    }
 
     if (env.NOTIFICATION_WEBHOOK_URL) {
       waitUntil(notifyLead(env.NOTIFICATION_WEBHOOK_URL, body, cleanUrl, primaryResult));

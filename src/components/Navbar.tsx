@@ -6,11 +6,11 @@ import Link from "next/link";
 import { Menu, X, MessageCircle } from "lucide-react";
 
 const navLinks = [
-  { label: "Sobre", href: "#sobre" },
-  { label: "Serviços", href: "#servicos" },
-  { label: "Plataformas", href: "#plataformas" },
-  { label: "Clientes", href: "#clientes" },
-  { label: "Contato", href: "#contato" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Serviços", href: "/#servicos" },
+  { label: "Plataformas", href: "/#plataformas" },
+  { label: "Clientes", href: "/#clientes" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export default function Navbar() {
@@ -27,7 +27,7 @@ export default function Navbar() {
     <>
       <nav className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
         <div className="navbar__container">
-          <Link href="#hero" className="navbar__logo">
+          <Link href="/#hero" className="navbar__logo">
             <Image
               src="/assets/logos/logo-dark.png"
               alt="Digital Black Rock"
