@@ -104,7 +104,7 @@ export default function RootLayout({
                   },
                   contactPoint: {
                     "@type": "ContactPoint",
-                    telephone: "+55-11-96968-3162",
+                    telephone: "+55-11-98240-0853",
                     email: "atendimento@digitalblackrock.com.br",
                     contactType: "customer service",
                     availableLanguage: ["Portuguese", "English"],
@@ -118,7 +118,7 @@ export default function RootLayout({
                   description:
                     "Consultoria e desenvolvimento de e-commerce com IA — VTEX, Shopify e Loja Integrada. Mais velocidade de entrega, mais performance, mais resultados.",
                   url: "https://digitalblackrock.com.br",
-                  telephone: "+55-11-96968-3162",
+                  telephone: "+55-11-98240-0853",
                   email: "atendimento@digitalblackrock.com.br",
                   image: "https://digitalblackrock.com.br/assets/logos/logo-dark.png",
                   address: {

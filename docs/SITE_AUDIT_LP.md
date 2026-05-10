@@ -153,7 +153,7 @@ Olá, fiz o teste do meu site pela Digital Black Rock e quero ajuda para
 melhorar minha performance e conversão. Minha URL é: [URL do lead]
 ```
 
-O número de destino é `5511969683162` (hardcoded no componente `SiteAuditCta`).
+O número de destino é `5511982400853` (hardcoded no componente `SiteAuditCta`).
 
 ---
 
