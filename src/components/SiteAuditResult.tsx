@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle, Globe, Cpu, XCircle, Smartphone, Monitor } from "lucide-react";
 import type { AuditResult, StrategyScores } from "@/types/audit";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -22,10 +23,10 @@ function scoreColor(score: number) {
   return "#25D366";
 }
 
-function scoreStatus(score: number): { label: string; cls: string } {
-  if (score < 50) return { label: "Crítico", cls: "critical" };
-  if (score < 75) return { label: "Atenção", cls: "warning" };
-  return { label: "Bom", cls: "good" };
+function scoreStatusKey(score: number): "critical" | "warning" | "good" {
+  if (score < 50) return "critical";
+  if (score < 75) return "warning";
+  return "good";
 }
 
 function vitalStatus(metric: string, value: string): string {
@@ -63,8 +64,11 @@ interface Props {
 }
 
 export default function SiteAuditResult({ result, url }: Props) {
+  const { t } = useLanguage();
+  const r = t.audit.result;
+
   const displayUrl = url.replace(/^https?:\/\//, "");
-  const hasAny  = !!(result.mobile || result.desktop);
+  const hasAny = !!(result.mobile || result.desktop);
   const [activeTab, setActiveTab] = useState<"mobile" | "desktop">(
     result.mobile ? "mobile" : "desktop"
   );
@@ -82,10 +86,10 @@ export default function SiteAuditResult({ result, url }: Props) {
   });
 
   const scores = [
-    { key: "performance",    label: "Performance",    value: viewScores.performance },
-    { key: "seo",            label: "SEO",            value: viewScores.seo },
-    { key: "accessibility",  label: "Acessibilidade", value: viewScores.accessibility },
-    { key: "best_practices", label: "Boas Práticas",  value: viewScores.best_practices },
+    { key: "performance",    label: r.scores.performance,    value: viewScores.performance },
+    { key: "seo",            label: r.scores.seo,            value: viewScores.seo },
+    { key: "accessibility",  label: r.scores.accessibility,  value: viewScores.accessibility },
+    { key: "best_practices", label: r.scores.bestPractices,  value: viewScores.best_practices },
   ];
 
   return (
@@ -97,8 +101,8 @@ export default function SiteAuditResult({ result, url }: Props) {
         transition={{ duration: 0.6, ease }}
       >
         <h2 className="audit-result__title">
-          Diagnóstico de{" "}
-          <span className="gradient-text">performance e conversão</span>
+          {r.titlePre}{" "}
+          <span className="gradient-text">{r.titleHighlight}</span>
         </h2>
         <div className="audit-result__url-badge">
           <Globe size={13} />
@@ -108,13 +112,12 @@ export default function SiteAuditResult({ result, url }: Props) {
           <div style={{ marginTop: "0.75rem" }}>
             <span className="audit-result__platform">
               <Cpu size={13} />
-              Plataforma detectada: {result.platform_detected}
+              {r.platformLabel} {result.platform_detected}
             </span>
           </div>
         )}
       </motion.div>
 
-      {/* Tabs Mobile / Desktop */}
       {hasAny && (
         <motion.div
           className="audit-result__tabs"
@@ -126,26 +129,25 @@ export default function SiteAuditResult({ result, url }: Props) {
             type="button"
             className={`audit-result__tab${activeTab === "mobile" ? " audit-result__tab--active" : ""}${!result.mobile ? " audit-result__tab--disabled" : ""}`}
             onClick={() => result.mobile && setActiveTab("mobile")}
-            title={!result.mobile ? "Site muito lento para medir no mobile" : undefined}
+            title={!result.mobile ? r.mobileSlowTitle : undefined}
           >
             <Smartphone size={14} />
             Mobile
-            {!result.mobile && <span className="audit-result__tab-na">N/D</span>}
+            {!result.mobile && <span className="audit-result__tab-na">{r.na}</span>}
           </button>
           <button
             type="button"
             className={`audit-result__tab${activeTab === "desktop" ? " audit-result__tab--active" : ""}${!result.desktop ? " audit-result__tab--disabled" : ""}`}
             onClick={() => result.desktop && setActiveTab("desktop")}
-            title={!result.desktop ? "Dados de desktop indisponíveis" : undefined}
+            title={!result.desktop ? r.desktopNaTitle : undefined}
           >
             <Monitor size={14} />
             Desktop
-            {!result.desktop && <span className="audit-result__tab-na">N/D</span>}
+            {!result.desktop && <span className="audit-result__tab-na">{r.na}</span>}
           </button>
         </motion.div>
       )}
 
-      {/* Score cards */}
       <motion.div
         key={activeTab}
         className="audit-result__scores"
@@ -154,20 +156,19 @@ export default function SiteAuditResult({ result, url }: Props) {
         animate="show"
       >
         {scores.map(({ key, label, value }) => {
-          const status = scoreStatus(value);
+          const statusKey = scoreStatusKey(value);
           return (
             <motion.div key={key} className="glass-card audit-result__score-card" variants={cardVariants}>
               <div className="audit-result__score-label">{label}</div>
               <ScoreRing score={value} />
-              <div className={`audit-result__score-status audit-result__score-status--${status.cls}`}>
-                {status.label}
+              <div className={`audit-result__score-status audit-result__score-status--${statusKey}`}>
+                {r.status[statusKey]}
               </div>
             </motion.div>
           );
         })}
       </motion.div>
 
-      {/* Core Web Vitals */}
       {(viewScores.lcp || viewScores.cls || viewScores.inp) && (
         <motion.div
           key={`vitals-${activeTab}`}
@@ -182,7 +183,7 @@ export default function SiteAuditResult({ result, url }: Props) {
               <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("lcp", viewScores.lcp)}`}>
                 {viewScores.lcp}s
               </div>
-              <div className="audit-result__vital-name">Maior Conteúdo</div>
+              <div className="audit-result__vital-name">{r.vitals.lcp}</div>
             </div>
           )}
           {viewScores.cls && (
@@ -191,7 +192,7 @@ export default function SiteAuditResult({ result, url }: Props) {
               <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("cls", viewScores.cls)}`}>
                 {viewScores.cls}
               </div>
-              <div className="audit-result__vital-name">Estabilidade Visual</div>
+              <div className="audit-result__vital-name">{r.vitals.cls}</div>
             </div>
           )}
           {viewScores.inp && (
@@ -200,13 +201,12 @@ export default function SiteAuditResult({ result, url }: Props) {
               <div className={`audit-result__vital-value audit-result__vital-value--${vitalStatus("inp", viewScores.inp)}`}>
                 {viewScores.inp}ms
               </div>
-              <div className="audit-result__vital-name">Interatividade</div>
+              <div className="audit-result__vital-name">{r.vitals.inp}</div>
             </div>
           )}
         </motion.div>
       )}
 
-      {/* Commercial diagnosis */}
       {result.ai_summary && (
         <motion.div
           className="audit-result__diagnosis"
@@ -216,10 +216,9 @@ export default function SiteAuditResult({ result, url }: Props) {
         >
           <div className="audit-result__diagnosis-title">
             <AlertTriangle size={16} style={{ color: "#FBBF24" }} />
-            Diagnóstico comercial
+            {r.diagnosisTitle}
           </div>
           {result.ai_summary
-            // garante quebra de parágrafo antes de emojis após pontuação
             .replace(/([.!?…])\s+([⚠️💸🚀])/gu, "$1\n\n$2")
             .split(/\n+/)
             .map(p => p.trim())
@@ -230,7 +229,6 @@ export default function SiteAuditResult({ result, url }: Props) {
         </motion.div>
       )}
 
-      {/* Issues */}
       {result.issues && result.issues.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -239,7 +237,7 @@ export default function SiteAuditResult({ result, url }: Props) {
         >
           <div className="audit-result__section-title">
             <XCircle size={16} style={{ color: "#FF6B6B" }} />
-            Principais problemas
+            {r.issuesTitle}
           </div>
           <div className="audit-result__issues">
             {result.issues.map((issue, i) => (
@@ -252,7 +250,6 @@ export default function SiteAuditResult({ result, url }: Props) {
         </motion.div>
       )}
 
-      {/* Recommendations */}
       {result.recommendations && result.recommendations.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -261,7 +258,7 @@ export default function SiteAuditResult({ result, url }: Props) {
         >
           <div className="audit-result__section-title">
             <CheckCircle size={16} style={{ color: "#25D366" }} />
-            Recomendações práticas
+            {r.recsTitle}
           </div>
           <div className="audit-result__recs">
             {result.recommendations.map((rec, i) => (

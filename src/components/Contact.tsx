@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MessageCircle, Send, MapPin, CheckCircle } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -17,6 +18,7 @@ const infoContainerVariants = {
 };
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", service: "", message: "" });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,15 +30,16 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const wa = t.contact.wa;
     const msg = encodeURIComponent(
-      `Olá! Me chamo *${form.name}* e tenho interesse nos serviços da Digital Black Rock.\n\n` +
-      `📧 Email: ${form.email}\n📱 Telefone: ${form.phone}\n🏢 Empresa: ${form.company}\n` +
-      `🛒 Serviço de interesse: ${form.service}\n\n💬 Mensagem: ${form.message}`
+      `${wa.intro} *${form.name}* ${wa.interest}\n\n` +
+      `📧 ${wa.emailLabel}: ${form.email}\n📱 ${wa.phoneLabel}: ${form.phone}\n🏢 ${wa.companyLabel}: ${form.company}\n` +
+      `🛒 ${wa.serviceLabel}: ${form.service}\n\n💬 ${wa.messageLabel}: ${form.message}`
     );
     setTimeout(() => {
       setLoading(false);
       setSent(true);
-      window.open(`https://wa.me/5511969683162?text=${msg}`, "_blank");
+      window.open(`https://wa.me/5511982400853?text=${msg}`, "_blank");
     }, 800);
   };
 
@@ -55,20 +58,17 @@ export default function Contact() {
         >
           <span className="section__tag">
             <Mail size={12} />
-            Contato
+            {t.contact.tag}
           </span>
           <h2 className="section__title">
-            Vamos conversar sobre{" "}
-            <span className="gradient-text">o seu projeto</span>
+            {t.contact.titlePre}{" "}
+            <span className="gradient-text">{t.contact.titleHighlight}</span>
           </h2>
-          <p className="section__subtitle">
-            Preencha o formulário e nossa equipe entrará em contato em até 24 horas.
-          </p>
+          <p className="section__subtitle">{t.contact.subtitle}</p>
         </motion.div>
 
         <div className="contact__grid">
 
-          {/* Left column — slides from left */}
           <motion.div
             className="contact__info"
             variants={infoContainerVariants}
@@ -81,15 +81,15 @@ export default function Contact() {
                 <MessageCircle size={22} style={{ color: "#25D366" }} />
               </div>
               <div>
-                <div className="contact-card__title">WhatsApp</div>
-                <a href="https://wa.me/5511969683162" target="_blank" rel="noopener noreferrer"
+                <div className="contact-card__title">{t.contact.whatsapp.title}</div>
+                <a href="https://wa.me/5511982400853" target="_blank" rel="noopener noreferrer"
                   className="contact-card__value" style={{ color: "#8B9CB8" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#25D366")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#8B9CB8")}
                 >
-                  (11) 96968-3162
+                  (11) 98240-0853
                 </a>
-                <div className="contact-card__note">Resposta rápida</div>
+                <div className="contact-card__note">{t.contact.whatsapp.note}</div>
               </div>
             </motion.div>
 
@@ -98,7 +98,7 @@ export default function Contact() {
                 <Mail size={22} style={{ color: "#00D4FF" }} />
               </div>
               <div>
-                <div className="contact-card__title">E-mail</div>
+                <div className="contact-card__title">{t.contact.email.title}</div>
                 <a href="mailto:atendimento@digitalblackrock.com.br"
                   className="contact-card__value" style={{ color: "#8B9CB8" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#00D4FF")}
@@ -106,7 +106,7 @@ export default function Contact() {
                 >
                   atendimento@digitalblackrock.com.br
                 </a>
-                <div className="contact-card__note">Resposta em até 24h</div>
+                <div className="contact-card__note">{t.contact.email.note}</div>
               </div>
             </motion.div>
 
@@ -115,29 +115,32 @@ export default function Contact() {
                 <MapPin size={22} style={{ color: "#7B61FF" }} />
               </div>
               <div>
-                <div className="contact-card__title">Localização</div>
-                <div className="contact-card__value" style={{ color: "#8B9CB8" }}>São Paulo, SP — Brasil</div>
-                <div className="contact-card__note">Atendimento nacional</div>
+                <div className="contact-card__title">{t.contact.location.title}</div>
+                <div className="contact-card__value" style={{ color: "#8B9CB8" }}>{t.contact.location.value}</div>
+                <div className="contact-card__note">{t.contact.location.note}</div>
               </div>
             </motion.div>
 
-            <motion.div
-              className="glass-card contact-card"
-              style={{ flexDirection: "column", alignItems: "flex-start" }}
-              variants={infoCardVariants}
-            >
-              <div className="contact-card__title">Atendimento de excelência</div>
-              <div style={{ display: "flex", gap: "4px", margin: "0.5rem 0" }}>
-                {[1,2,3,4,5].map((s) => <span key={s} style={{ color: "#FBBF24", fontSize: "1.125rem" }}>★</span>)}
-              </div>
-              <p style={{ color: "#8B9CB8", fontSize: "1rem", lineHeight: 1.6 }}>
-                &ldquo;A Digital Black Rock transformou completamente nossa operação de e-commerce. Profissionalismo e resultados reais.&rdquo;
-              </p>
-              <p style={{ color: "#00D4FF", fontSize: "0.875rem", marginTop: "0.75rem", fontWeight: 600 }}>— CEO, Arena Plata</p>
-            </motion.div>
+            {t.contact.testimonials.map((item, idx) => (
+              <motion.div
+                key={idx}
+                className="glass-card contact-card"
+                style={{ flexDirection: "column", alignItems: "flex-start" }}
+                variants={infoCardVariants}
+              >
+                <div style={{ display: "flex", gap: "3px", marginBottom: "0.5rem" }}>
+                  {[1,2,3,4,5].map((s) => <span key={s} style={{ color: "#FBBF24", fontSize: "1rem" }}>★</span>)}
+                </div>
+                <p style={{ color: "#8B9CB8", fontSize: "0.9375rem", lineHeight: 1.65, flex: 1 }}>
+                  {item.review}
+                </p>
+                <p style={{ color: "#00D4FF", fontSize: "0.8125rem", marginTop: "0.75rem", fontWeight: 600 }}>
+                  — {item.author}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
 
-          {/* Right column — slides from bottom */}
           <motion.div
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -149,68 +152,68 @@ export default function Contact() {
                 <div className="contact-success__icon">
                   <CheckCircle size={40} style={{ color: "#25D366" }} />
                 </div>
-                <h3 className="contact-success__title">Mensagem enviada!</h3>
-                <p className="contact-success__message">Abrimos o WhatsApp para você. Nossa equipe retornará em breve!</p>
+                <h3 className="contact-success__title">{t.contact.success.title}</h3>
+                <p className="contact-success__message">{t.contact.success.message}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="glass-card contact-form">
                 <div className="contact-form__grid">
                   <div className="contact-form__field">
-                    <label htmlFor="contact-name" className="contact-form__label">Nome *</label>
-                    <input id="contact-name" type="text" name="name" value={form.name} onChange={handleChange} required placeholder="Seu nome completo" className="form-input" />
+                    <label htmlFor="contact-name" className="contact-form__label">{t.contact.form.name}</label>
+                    <input id="contact-name" type="text" name="name" value={form.name} onChange={handleChange} required placeholder={t.contact.form.namePlaceholder} className="form-input" />
                   </div>
                   <div className="contact-form__field">
-                    <label htmlFor="contact-email" className="contact-form__label">E-mail *</label>
-                    <input id="contact-email" type="email" name="email" value={form.email} onChange={handleChange} required placeholder="seu@email.com" className="form-input" />
+                    <label htmlFor="contact-email" className="contact-form__label">{t.contact.form.email}</label>
+                    <input id="contact-email" type="email" name="email" value={form.email} onChange={handleChange} required placeholder={t.contact.form.emailPlaceholder} className="form-input" />
                   </div>
                 </div>
 
                 <div className="contact-form__grid">
                   <div className="contact-form__field">
-                    <label htmlFor="contact-phone" className="contact-form__label">Telefone / WhatsApp</label>
-                    <input id="contact-phone" type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder="(11) 99999-9999" className="form-input" />
+                    <label htmlFor="contact-phone" className="contact-form__label">{t.contact.form.phone}</label>
+                    <input id="contact-phone" type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder={t.contact.form.phonePlaceholder} className="form-input" />
                   </div>
                   <div className="contact-form__field">
-                    <label htmlFor="contact-company" className="contact-form__label">Empresa</label>
-                    <input id="contact-company" type="text" name="company" value={form.company} onChange={handleChange} placeholder="Nome da sua empresa" className="form-input" />
+                    <label htmlFor="contact-company" className="contact-form__label">{t.contact.form.company}</label>
+                    <input id="contact-company" type="text" name="company" value={form.company} onChange={handleChange} placeholder={t.contact.form.companyPlaceholder} className="form-input" />
                   </div>
                 </div>
 
                 <div className="contact-form__field">
-                  <label htmlFor="contact-service" className="contact-form__label">Serviço de Interesse</label>
+                  <label htmlFor="contact-service" className="contact-form__label">{t.contact.form.service}</label>
                   <select id="contact-service" name="service" value={form.service} onChange={handleChange} className="form-input">
-                    <option value="" style={{ background: "#0C1525" }}>Selecione um serviço</option>
-                    <option value="Consultoria de E-commerce" style={{ background: "#0C1525" }}>Consultoria de E-commerce</option>
-                    <option value="Implementação de E-commerce" style={{ background: "#0C1525" }}>Implementação de E-commerce</option>
-                    <option value="Otimização e SEO" style={{ background: "#0C1525" }}>Otimização e SEO</option>
-                    <option value="Migração de E-commerce" style={{ background: "#0C1525" }}>Migração de E-commerce (B2C/B2B)</option>
-                    <option value="Suporte e Evolução" style={{ background: "#0C1525" }}>Suporte e Evolução</option>
-                    <option value="Sites, Blogs e Landing Pages" style={{ background: "#0C1525" }}>Sites, Blogs e Landing Pages</option>
+                    <option value="" style={{ background: "#0C1525" }}>{t.contact.form.servicePlaceholder}</option>
+                    {t.contact.form.serviceOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value} style={{ background: "#0C1525" }}>{opt.label}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div className="contact-form__field">
-                  <label htmlFor="contact-message" className="contact-form__label">Mensagem</label>
-                  <textarea id="contact-message" name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Conte-nos sobre seu projeto ou dúvida..." className="form-input" style={{ resize: "none" }} />
+                  <label htmlFor="contact-message" className="contact-form__label">{t.contact.form.message}</label>
+                  <textarea id="contact-message" name="message" value={form.message} onChange={handleChange} rows={4} placeholder={t.contact.form.messagePlaceholder} className="form-input" style={{ resize: "none" }} />
                 </div>
 
-                <button type="submit" disabled={loading} className={`btn btn--primary contact-form__submit${loading ? " btn--disabled" : ""}`}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`btn btn--primary contact-form__submit${loading ? " btn--disabled" : ""}`}
                   style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
                 >
                   {loading ? (
                     <>
                       <div className="animate-spin" style={{ width: "16px", height: "16px", border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%" }} />
-                      Enviando...
+                      {t.contact.form.sending}
                     </>
                   ) : (
                     <>
                       <Send size={18} />
-                      Enviar Mensagem via WhatsApp
+                      {t.contact.form.submit}
                     </>
                   )}
                 </button>
 
-                <p className="contact-form__note">Ao enviar, você será redirecionado para o WhatsApp</p>
+                <p className="contact-form__note">{t.contact.form.redirectNote}</p>
               </form>
             )}
           </motion.div>

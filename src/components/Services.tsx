@@ -1,47 +1,12 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Briefcase, ShoppingCart, Search, ArrowLeftRight, Brain, Globe, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const services = [
-  {
-    icon: Briefcase,
-    title: "Consultoria de E-commerce",
-    desc: "Estratégia personalizada para acelerar o crescimento online. Identificamos gargalos, oportunidades e traçamos o caminho mais eficiente para escalar suas vendas.",
-    color: "#00D4FF",
-  },
-  {
-    icon: ShoppingCart,
-    title: "Implementação de E-commerce",
-    desc: "Criamos sua loja do zero em VTEX, Shopify ou Loja Integrada — plataformas robustas, seguras e prontas para converter.",
-    color: "#7B61FF",
-  },
-  {
-    icon: Brain,
-    title: "Desenvolvimento com IA",
-    desc: "Aplicamos Inteligência Artificial para aumentar a velocidade de entrega, melhorar performance técnica e automatizar processos no seu e-commerce.",
-    color: "#00D4FF",
-  },
-  {
-    icon: Search,
-    title: "SEO & Performance",
-    desc: "Aumentamos a visibilidade orgânica e a velocidade da sua loja. Mais tráfego qualificado, menor CAC e maior taxa de conversão.",
-    color: "#7B61FF",
-  },
-  {
-    icon: ArrowLeftRight,
-    title: "Migração B2C e B2B",
-    desc: "Migramos sua loja para uma plataforma mais escalável com zero downtime. Especialistas em transferência de dados e integrações complexas.",
-    color: "#00D4FF",
-  },
-  {
-    icon: Globe,
-    title: "Sites & Landing Pages",
-    desc: "Páginas de alta conversão focadas em performance e UX. Design orientado a resultado, com otimização contínua baseada em dados.",
-    color: "#7B61FF",
-  },
-];
+const icons = [Briefcase, ShoppingCart, Brain, Search, ArrowLeftRight, Globe];
+const colors = ["#00D4FF", "#7B61FF", "#00D4FF", "#7B61FF", "#00D4FF", "#7B61FF"];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -55,10 +20,12 @@ const containerVariants = {
   show:   { transition: { staggerChildren: 0.09 } },
 };
 
-function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
-  const Icon = service.icon;
+function ServiceCard({
+  title, desc, color, icon: Icon, cta,
+}: {
+  title: string; desc: string; color: string; icon: typeof Briefcase; cta: string;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
-
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
   const springCfg = { stiffness: 220, damping: 22 };
@@ -78,47 +45,34 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
     scale.set(1.02);
   };
 
-  const handleMouseLeave = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-    scale.set(1);
-  };
+  const handleMouseLeave = () => { rotateX.set(0); rotateY.set(0); scale.set(1); };
 
   return (
     <motion.div
       variants={cardVariants}
       style={{
-        rotateX: sRotateX,
-        rotateY: sRotateY,
-        scale: sScale,
-        transformPerspective: 900,
-        transformStyle: "preserve-3d",
+        rotateX: sRotateX, rotateY: sRotateY, scale: sScale,
+        transformPerspective: 900, transformStyle: "preserve-3d",
       }}
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="glass-card service-card"
     >
-      <div
-        className="service-card__accent"
-        style={{ background: `linear-gradient(90deg, transparent, ${service.color}, transparent)` }}
-      />
-      <div
-        className="service-card__icon"
-        style={{ background: `${service.color}15` }}
-      >
-        <Icon size={28} style={{ color: service.color }} />
+      <div className="service-card__accent" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }} />
+      <div className="service-card__icon" style={{ background: `${color}15` }}>
+        <Icon size={28} style={{ color }} />
       </div>
-      <h3 className="service-card__title">{service.title}</h3>
-      <p className="service-card__desc">{service.desc}</p>
+      <h3 className="service-card__title">{title}</h3>
+      <p className="service-card__desc">{desc}</p>
       <a
-        href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Digital%20Black%20Rock."
+        href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Digital%20Black%20Rock."
         target="_blank"
         rel="noopener noreferrer"
         className="service-card__cta"
-        style={{ color: service.color }}
+        style={{ color }}
       >
-        Falar com especialista
+        {cta}
         <ArrowRight size={14} />
       </a>
     </motion.div>
@@ -126,6 +80,8 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
 }
 
 export default function Services() {
+  const { t } = useLanguage();
+
   return (
     <section id="servicos" className="services">
       <div className="grid-pattern" style={{ position: "absolute", inset: 0, opacity: 0.3 }} />
@@ -140,16 +96,16 @@ export default function Services() {
         >
           <span className="section__tag">
             <Briefcase size={12} />
-            Nossos Serviços
+            {t.services.tag}
           </span>
           <h2 className="section__title">
-            Soluções completas para{" "}
-            <span className="gradient-text">escalar seu e-commerce</span>
+            {t.services.titlePre}{" "}
+            <span className="gradient-text">{t.services.titleHighlight}</span>
           </h2>
           <p className="section__subtitle">
-            Do planejamento estratégico à execução técnica — com{" "}
-            <strong style={{ color: "#7B61FF" }}>IA integrada</strong> para mais
-            velocidade, performance e resultados reais.
+            {t.services.subtitlePre}{" "}
+            <strong style={{ color: "#7B61FF" }}>{t.services.subtitleHighlight}</strong>{" "}
+            {t.services.subtitlePost}
           </p>
         </motion.div>
 
@@ -160,8 +116,15 @@ export default function Services() {
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {services.map((service, i) => (
-            <ServiceCard key={service.title} service={service} index={i} />
+          {t.services.items.map((service, i) => (
+            <ServiceCard
+              key={service.title}
+              title={service.title}
+              desc={service.desc}
+              color={colors[i]}
+              icon={icons[i]}
+              cta={t.services.cardCta}
+            />
           ))}
         </motion.div>
 

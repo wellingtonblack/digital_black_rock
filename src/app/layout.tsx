@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.scss";
 import UtmTracker from "@/components/UtmTracker";
+import ClientProviders from "@/components/ClientProviders";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +12,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://digitalblackrock.com.br"),
-  title: "Consultoria de E-commerce | VTEX, Shopify, Loja Integrada | Digital Black Rock",
+  title: "Consultoria E-commerce | VTEX, Shopify | Digital Black Rock",
   description:
     "Agência especializada em consultoria e desenvolvimento de e-commerce: VTEX, Shopify, Loja Integrada, NuvemShop e WooCommerce. Criação do zero, migração, SEO e IA para aumentar suas vendas.",
   keywords:
@@ -72,6 +73,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://wa.me" />
         <link rel="dns-prefetch" href="https://www.instagram.com" />
+        {/* hreflang — bilingual PT/EN at same URL */}
+        <link rel="alternate" hrefLang="pt-BR" href="https://digitalblackrock.com.br/" />
+        <link rel="alternate" hrefLang="en" href="https://digitalblackrock.com.br/" />
+        <link rel="alternate" hrefLang="x-default" href="https://digitalblackrock.com.br/" />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -79,6 +84,15 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": "https://digitalblackrock.com.br/#website",
+                  url: "https://digitalblackrock.com.br",
+                  name: "Digital Black Rock",
+                  description: "Agência especializada em consultoria e desenvolvimento de e-commerce: VTEX, Shopify, Loja Integrada, NuvemShop e WooCommerce.",
+                  inLanguage: ["pt-BR", "en"],
+                  publisher: { "@id": "https://digitalblackrock.com.br/#organization" },
+                },
                 {
                   "@type": "Organization",
                   "@id": "https://digitalblackrock.com.br/#organization",
@@ -93,7 +107,7 @@ export default function RootLayout({
                     telephone: "+55-11-96968-3162",
                     email: "atendimento@digitalblackrock.com.br",
                     contactType: "customer service",
-                    availableLanguage: "Portuguese",
+                    availableLanguage: ["Portuguese", "English"],
                   },
                   sameAs: ["https://www.instagram.com/digitalblackrock/"],
                 },
@@ -134,7 +148,67 @@ export default function RootLayout({
                     bestRating: "5",
                     worstRating: "1",
                   },
+                  review: {
+                    "@type": "Review",
+                    reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                    author: { "@type": "Person", name: "CEO, Arena Plata" },
+                    reviewBody: "A Digital Black Rock transformou completamente nossa operação de e-commerce. Profissionalismo, entrega no prazo e resultados reais e mensuráveis.",
+                  },
                 },
+                ...[
+                  {
+                    id: "consultoria",
+                    name: "Consultoria de E-commerce",
+                    desc: "Estratégia personalizada para acelerar o crescimento online. Identificamos gargalos, oportunidades e traçamos o caminho mais eficiente para escalar suas vendas.",
+                    url: "https://digitalblackrock.com.br/consultoria-ecommerce/",
+                  },
+                  {
+                    id: "implementacao",
+                    name: "Implementação de E-commerce",
+                    desc: "Criação de lojas virtuais do zero em VTEX, Shopify ou Loja Integrada — plataformas robustas, seguras e prontas para converter.",
+                    url: "https://digitalblackrock.com.br/desenvolvimento-vtex/",
+                  },
+                  {
+                    id: "ia",
+                    name: "Desenvolvimento com IA",
+                    desc: "Aplicamos Inteligência Artificial para aumentar a velocidade de entrega, melhorar performance técnica e automatizar processos no e-commerce.",
+                    url: "https://digitalblackrock.com.br/#servicos",
+                  },
+                  {
+                    id: "seo",
+                    name: "SEO & Performance",
+                    desc: "Aumentamos a visibilidade orgânica e a velocidade da loja. Mais tráfego qualificado, menor CAC e maior taxa de conversão.",
+                    url: "https://digitalblackrock.com.br/seo-performance/",
+                  },
+                  {
+                    id: "migracao",
+                    name: "Migração de E-commerce",
+                    desc: "Migração de lojas para plataformas mais escaláveis com zero downtime. Especialistas em transferência de dados e integrações complexas.",
+                    url: "https://digitalblackrock.com.br/migracao-ecommerce/",
+                  },
+                  {
+                    id: "sites",
+                    name: "Sites & Landing Pages",
+                    desc: "Páginas de alta conversão focadas em performance e UX. Design orientado a resultado com otimização contínua baseada em dados.",
+                    url: "https://digitalblackrock.com.br/#servicos",
+                  },
+                ].map(({ id, name, desc, url }) => ({
+                  "@type": "Service",
+                  "@id": `https://digitalblackrock.com.br/#service-${id}`,
+                  name,
+                  description: desc,
+                  url,
+                  serviceType: "E-commerce",
+                  provider: { "@id": "https://digitalblackrock.com.br/#organization" },
+                  areaServed: { "@type": "Country", "name": "Brazil" },
+                  offers: {
+                    "@type": "Offer",
+                    name: "Consulta Gratuita",
+                    price: "0",
+                    priceCurrency: "BRL",
+                    availability: "https://schema.org/InStock",
+                  },
+                })),
                 {
                   "@type": "FAQPage",
                   "@id": "https://digitalblackrock.com.br/#faq",
@@ -218,8 +292,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         {/* End Google Tag Manager (noscript) */}
-        <UtmTracker />
-        {children}
+        <ClientProviders>
+          <UtmTracker />
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

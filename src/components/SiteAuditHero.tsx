@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, ShieldCheck, Zap, Lock } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -27,6 +28,8 @@ interface Props {
 }
 
 export default function SiteAuditHero({ onAnalyze }: Props) {
+  const { t } = useLanguage();
+  const h = t.audit.hero;
   const [raw, setRaw] = useState("");
   const [error, setError] = useState("");
 
@@ -34,7 +37,7 @@ export default function SiteAuditHero({ onAnalyze }: Props) {
     e.preventDefault();
     const url = normalizeUrl(raw);
     if (!isValidUrl(url)) {
-      setError("URL inválida. Ex: minhaloja.com.br");
+      setError(h.errorUrl);
       return;
     }
     setError("");
@@ -54,7 +57,7 @@ export default function SiteAuditHero({ onAnalyze }: Props) {
         >
           <span className="audit-hero__tag">
             <Zap size={12} />
-            Diagnóstico Gratuito
+            {h.tag}
           </span>
         </motion.div>
 
@@ -64,9 +67,9 @@ export default function SiteAuditHero({ onAnalyze }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease }}
         >
-          Descubra se sua loja está{" "}
-          <span className="gradient-text">perdendo vendas</span> por lentidão,
-          SEO ou baixa conversão
+          {h.titlePre}{" "}
+          <span className="gradient-text">{h.titleHighlight}</span>{" "}
+          {h.titlePost}
         </motion.h1>
 
         <motion.p
@@ -75,8 +78,7 @@ export default function SiteAuditHero({ onAnalyze }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.2, ease }}
         >
-          Digite a URL do seu site e receba uma análise automática com pontos
-          críticos que podem estar afetando suas vendas.
+          {h.subtitle}
         </motion.p>
 
         <motion.form
@@ -90,19 +92,17 @@ export default function SiteAuditHero({ onAnalyze }: Props) {
               type="text"
               value={raw}
               onChange={(e) => { setRaw(e.target.value); setError(""); }}
-              placeholder="Insira a URL da sua loja"
+              placeholder={h.placeholder}
               className={`audit-hero__url-input${error ? " audit-hero__url-input--error" : ""}`}
               autoComplete="off"
               spellCheck={false}
             />
             <button type="submit" className="btn btn--primary audit-hero__url-btn">
               <Search size={18} />
-              Analisar meu site agora
+              {h.btn}
             </button>
           </div>
-          {error && (
-            <p className="audit-hero__url-error">{error}</p>
-          )}
+          {error && <p className="audit-hero__url-error">{error}</p>}
         </motion.form>
 
         <motion.div
@@ -113,15 +113,15 @@ export default function SiteAuditHero({ onAnalyze }: Props) {
         >
           <span className="audit-hero__trust-item">
             <ShieldCheck size={14} style={{ color: "#25D366" }} />
-            100% gratuito
+            {h.trust[0]}
           </span>
           <span className="audit-hero__trust-item">
             <Zap size={14} style={{ color: "#00D4FF" }} />
-            Resultado em segundos
+            {h.trust[1]}
           </span>
           <span className="audit-hero__trust-item">
             <Lock size={14} style={{ color: "#7B61FF" }} />
-            Seus dados protegidos
+            {h.trust[2]}
           </span>
         </motion.div>
       </div>

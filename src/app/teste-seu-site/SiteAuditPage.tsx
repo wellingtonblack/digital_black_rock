@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/contexts/LanguageContext";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import SiteAuditHero from "@/components/SiteAuditHero";
 import SiteAuditForm from "@/components/SiteAuditForm";
@@ -15,6 +16,7 @@ import { getFirstTouch, getLastTouch } from "@/lib/attribution";
 type Stage = "idle" | "collectingLead" | "loading" | "success" | "error";
 
 export default function SiteAuditPage() {
+  const { t } = useLanguage();
   const [stage, setStage] = useState<Stage>("idle");
   const [url, setUrl] = useState("");
   const [result, setResult] = useState<AuditResult | null>(null);
@@ -121,7 +123,7 @@ export default function SiteAuditPage() {
             <div className="audit-error">
               <div className="glass-card audit-error__card">
                 <div className="audit-error__icon">⚠️</div>
-                <h2 className="audit-error__title">Não conseguimos analisar</h2>
+                <h2 className="audit-error__title">{t.audit.error.title}</h2>
                 <p className="audit-error__message">{errorMsg}</p>
                 <button
                   onClick={handleReset}
@@ -129,7 +131,7 @@ export default function SiteAuditPage() {
                   style={{ margin: "0 auto" }}
                   type="button"
                 >
-                  Tentar novamente
+                  {t.audit.error.retry}
                 </button>
               </div>
             </div>

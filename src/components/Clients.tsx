@@ -1,30 +1,13 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { Users } from "lucide-react";
-
-const clients = [
-  { name: "Aramis", category: "Moda Masculina" },
-  { name: "Intimissimi", category: "Moda Íntima" },
-  { name: "Aéropostale", category: "Moda" },
-  { name: "Cirilo Cabos", category: "Tecnologia" },
-  { name: "Arena Plata", category: "Joias & Prata" },
-  { name: "Blu(k)", category: "Moda" },
-  { name: "Mixtou", category: "Varejo" },
-  { name: "Flueshop", category: "Moda" },
-  { name: "Varezzi", category: "Moda" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const colorPairs: [string, string][] = [
-  ["#00D4FF", "#7B61FF"],
-  ["#7B61FF", "#00D4FF"],
-  ["#00D4FF", "#7B61FF"],
-  ["#7B61FF", "#00D4FF"],
-  ["#00D4FF", "#7B61FF"],
-  ["#7B61FF", "#00D4FF"],
-  ["#00D4FF", "#7B61FF"],
-  ["#7B61FF", "#00D4FF"],
-  ["#00D4FF", "#7B61FF"],
+  ["#00D4FF", "#7B61FF"], ["#7B61FF", "#00D4FF"], ["#00D4FF", "#7B61FF"],
+  ["#7B61FF", "#00D4FF"], ["#00D4FF", "#7B61FF"], ["#7B61FF", "#00D4FF"],
+  ["#00D4FF", "#7B61FF"], ["#7B61FF", "#00D4FF"], ["#00D4FF", "#7B61FF"],
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -40,6 +23,8 @@ const containerVariants = {
 };
 
 export default function Clients() {
+  const { t } = useLanguage();
+
   return (
     <section id="clientes" className="clients">
       <div className="grid-pattern" style={{ position: "absolute", inset: 0, opacity: 0.3 }} />
@@ -55,16 +40,13 @@ export default function Clients() {
         >
           <span className="section__tag">
             <Users size={12} />
-            Nossos Clientes
+            {t.clients.tag}
           </span>
           <h2 className="section__title">
-            Marcas que{" "}
-            <span className="gradient-text">confiam em nós</span>
+            {t.clients.titlePre}{" "}
+            <span className="gradient-text">{t.clients.titleHighlight}</span>
           </h2>
-          <p className="section__subtitle">
-            Grandes marcas escolheram a Digital Black Rock para transformar suas operações de
-            e-commerce. Você também pode fazer parte desse grupo.
-          </p>
+          <p className="section__subtitle">{t.clients.subtitle}</p>
         </motion.div>
 
         <motion.div
@@ -74,7 +56,7 @@ export default function Clients() {
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {clients.map((client, i) => {
+          {t.clients.items.map((client, i) => {
             const [c1, c2] = colorPairs[i];
             const initials = client.name
               .split(" ")
@@ -86,10 +68,7 @@ export default function Clients() {
               <motion.div key={client.name} className="glass-card client-card" variants={cardVariants}>
                 <div
                   className="client-card__avatar"
-                  style={{
-                    background: `linear-gradient(135deg, ${c1}30, ${c2}30)`,
-                    border: `1px solid ${c1}40`,
-                  }}
+                  style={{ background: `linear-gradient(135deg, ${c1}30, ${c2}30)`, border: `1px solid ${c1}40` }}
                 >
                   {initials}
                 </div>
@@ -109,14 +88,14 @@ export default function Clients() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6, ease }}
         >
-          <p className="clients__cta-text">Sua empresa pode ser a próxima história de sucesso</p>
+          <p className="clients__cta-text">{t.clients.ctaText}</p>
           <a
-            href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Quero%20ser%20o%20pr%C3%B3ximo%20case%20de%20sucesso%20da%20Digital%20Black%20Rock."
+            href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Quero%20ser%20o%20pr%C3%B3ximo%20case%20de%20sucesso%20da%20Digital%20Black%20Rock."
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--primary"
           >
-            Quero Ser o Próximo Case
+            {t.clients.ctaBtn}
           </a>
         </motion.div>
 

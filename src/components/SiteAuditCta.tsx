@@ -1,9 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle, RotateCcw, Share2, Check } from "lucide-react";
 import type { AuditResult } from "@/types/audit";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -13,21 +14,20 @@ interface Props {
   result: AuditResult;
 }
 
-const WA_NUMBER = "5511969683162";
+const WA_NUMBER = "5511982400853";
 
 export default function SiteAuditCta({ url, onReset, result }: Props) {
+  const { t } = useLanguage();
+  const c = t.audit.cta;
   const [copied, setCopied] = useState(false);
 
-  const msg = encodeURIComponent(
-    `Olá, fiz o teste do meu site pela Digital Black Rock e quero ajuda para melhorar minha performance e conversão. Minha URL é: ${url}`
-  );
+  const msg = encodeURIComponent(`${c.waMsg} ${url}`);
   const waLink = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
   async function handleShare() {
-    const text =
-      `Testei meu site na Digital Black Rock! 🚀\n` +
-      `Performance: ${result.performance_score}/100 | SEO: ${result.seo_score}/100\n` +
-      `Faça o teste grátis: https://digitalblackrock.com.br/teste-seu-site/`;
+    const text = c.shareText
+      .replace("{perf}", String(result.performance_score))
+      .replace("{seo}", String(result.seo_score));
     try {
       if (navigator.share) {
         await navigator.share({ text });
@@ -47,22 +47,15 @@ export default function SiteAuditCta({ url, onReset, result }: Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease }}
       >
-        <h3 className="audit-cta__title">
-          Quer que um especialista corrija esses pontos para você?
-        </h3>
-        <p className="audit-cta__subtitle">
-          Nossa equipe pode resolver todos os problemas encontrados e transformar seu
-          site em uma máquina de vendas. Sem enrolação.
-        </p>
+        <h3 className="audit-cta__title">{c.title}</h3>
+        <p className="audit-cta__subtitle">{c.subtitle}</p>
 
         <a href={waLink} target="_blank" rel="noopener noreferrer" className="audit-cta__btn">
           <MessageCircle size={20} />
-          Quero corrigir isso agora
+          {c.btn}
         </a>
 
-        <p className="audit-cta__note">
-          Resposta em até 1 hora nos dias úteis
-        </p>
+        <p className="audit-cta__note">{c.note}</p>
 
         <div className="audit-cta__actions">
           <button
@@ -71,16 +64,12 @@ export default function SiteAuditCta({ url, onReset, result }: Props) {
             type="button"
           >
             {copied ? <Check size={15} /> : <Share2 size={15} />}
-            {copied ? "Copiado!" : "Compartilhar resultado"}
+            {copied ? c.copied : c.share}
           </button>
 
-          <button
-            onClick={onReset}
-            className="btn btn--secondary btn--sm"
-            type="button"
-          >
+          <button onClick={onReset} className="btn btn--secondary btn--sm" type="button">
             <RotateCcw size={15} />
-            Testar outro site
+            {c.reset}
           </button>
         </div>
       </motion.div>

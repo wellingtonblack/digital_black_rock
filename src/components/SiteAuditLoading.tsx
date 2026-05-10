@@ -2,29 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-
-const STEPS = [
-  "Acessando seu site...",
-  "Medindo velocidade de carregamento...",
-  "Analisando SEO e meta tags...",
-  "Verificando acessibilidade...",
-  "Gerando diagnóstico comercial...",
-];
 
 interface Props {
   url: string;
 }
 
 export default function SiteAuditLoading({ url }: Props) {
+  const { t } = useLanguage();
+  const l = t.audit.loading;
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
-    if (activeStep >= STEPS.length - 1) return;
+    if (activeStep >= l.steps.length - 1) return;
     const timer = setTimeout(() => setActiveStep((s) => s + 1), 1800);
     return () => clearTimeout(timer);
-  }, [activeStep]);
+  }, [activeStep, l.steps.length]);
 
   const displayUrl = url.replace(/^https?:\/\//, "");
 
@@ -40,24 +35,21 @@ export default function SiteAuditLoading({ url }: Props) {
           <div className="audit-loading__spinner" />
         </div>
 
-        <h2 className="audit-loading__title">Analisando seu site</h2>
+        <h2 className="audit-loading__title">{l.title}</h2>
         <p className="audit-loading__subtitle">
-          Estamos auditando{" "}
+          {l.subtitlePre}{" "}
           <span style={{ color: "#00D4FF", fontWeight: 600 }}>{displayUrl}</span>
           <br />
-          Isso pode levar alguns segundos...
+          {l.subtitlePost}
         </p>
 
         <div className="audit-loading__steps">
-          {STEPS.map((step, i) => (
+          {l.steps.map((step, i) => (
             <div
-              key={step}
+              key={i}
               className={`audit-loading__step${
-                i === activeStep
-                  ? " audit-loading__step--active"
-                  : i < activeStep
-                  ? " audit-loading__step--done"
-                  : ""
+                i === activeStep ? " audit-loading__step--active"
+                : i < activeStep ? " audit-loading__step--done" : ""
               }`}
             >
               <span className="audit-loading__step-dot" />

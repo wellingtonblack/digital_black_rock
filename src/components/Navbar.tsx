@@ -1,19 +1,14 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, MessageCircle } from "lucide-react";
-
-const navLinks = [
-  { label: "Sobre", href: "/#sobre" },
-  { label: "Serviços", href: "/#servicos" },
-  { label: "Plataformas", href: "/#plataformas" },
-  { label: "Clientes", href: "/#clientes" },
-  { label: "Contato", href: "/#contato" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -39,7 +34,7 @@ export default function Navbar() {
           </Link>
 
           <div className="navbar__links">
-            {navLinks.map((link) => (
+            {t.nav.links.map((link) => (
               <a key={link.href} href={link.href} className="navbar__link">
                 {link.label}
               </a>
@@ -47,21 +42,22 @@ export default function Navbar() {
           </div>
 
           <div className="navbar__cta">
+            <LanguageSwitcher />
             <a
-              href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Digital%20Black%20Rock."
+              href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Digital%20Black%20Rock."
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--primary btn--sm"
             >
               <MessageCircle size={16} />
-              Falar com Especialista
+              {t.nav.cta}
             </a>
           </div>
 
           <button
             className="navbar__toggle"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menu"
+            aria-label={t.nav.menuAriaLabel}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -69,7 +65,7 @@ export default function Navbar() {
       </nav>
 
       <div className={`mobile-menu${mobileOpen ? " mobile-menu--visible" : " mobile-menu--hidden"}`}>
-        {navLinks.map((link) => (
+        {t.nav.links.map((link) => (
           <a
             key={link.href}
             href={link.href}
@@ -79,16 +75,19 @@ export default function Navbar() {
             {link.label}
           </a>
         ))}
+        <div style={{ margin: "1rem 0 0.5rem" }}>
+          <LanguageSwitcher />
+        </div>
         <a
-          href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Digital%20Black%20Rock."
+          href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Digital%20Black%20Rock."
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setMobileOpen(false)}
           className="btn btn--primary"
-          style={{ marginTop: "1rem" }}
+          style={{ marginTop: "0.5rem" }}
         >
           <MessageCircle size={18} />
-          Falar com Especialista
+          {t.nav.cta}
         </a>
       </div>
     </>

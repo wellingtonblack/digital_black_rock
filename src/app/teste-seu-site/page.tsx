@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Teste Gratuito do Seu Site | Digital Black Rock",
   description:
     "Descubra se sua loja está perdendo vendas por lentidão, SEO ou baixa conversão. Diagnóstico automático e gratuito em segundos.",
+  alternates: {
+    canonical: "https://digitalblackrock.com.br/teste-seu-site/",
+  },
   openGraph: {
     title: "Teste Gratuito do Seu Site | Digital Black Rock",
     description:
@@ -17,6 +20,33 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://digitalblackrock.com.br/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Teste Gratuito do Seu Site",
+      item: "https://digitalblackrock.com.br/teste-seu-site/",
+    },
+  ],
+};
+
 export default function Page() {
-  return <SiteAuditPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <SiteAuditPage />
+    </>
+  );
 }

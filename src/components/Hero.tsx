@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import {
@@ -9,8 +9,10 @@ import {
   useSpring,
 } from "framer-motion";
 import { ArrowRight, MessageCircle, TrendingUp, ShieldCheck, Brain, Zap } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -21,14 +23,12 @@ export default function Hero() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // ── Scroll-based parallax (desktop only) ──────────────────────────────────
   const { scrollY } = useScroll();
   const blobCyanY    = useTransform(scrollY, [0, 700], [0, -180]);
   const blobPurpleY  = useTransform(scrollY, [0, 700], [0,  -90]);
   const wrapY        = useTransform(scrollY, [0, 600], [0,  -70]);
   const wrapOpacity  = useTransform(scrollY, [0, 480], [1,    0]);
 
-  // ── Mouse parallax (desktop only) ─────────────────────────────────────────
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springCfg = { stiffness: 35, damping: 14, mass: 0.6 };
@@ -42,7 +42,6 @@ export default function Hero() {
   };
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
-  // ── Canvas particles ───────────────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -106,7 +105,6 @@ export default function Hero() {
     };
   }, []);
 
-  // ── Stagger variants ───────────────────────────────────────────────────────
   const ease = [0.22, 1, 0.36, 1] as const;
 
   return (
@@ -118,13 +116,10 @@ export default function Hero() {
     >
       <canvas ref={canvasRef} className="hero__canvas" />
 
-      {/* Blobs — parallax apenas no desktop */}
       <motion.div className="hero__blob hero__blob--cyan"   style={isDesktop ? { y: blobCyanY } : undefined} />
       <motion.div className="hero__blob hero__blob--purple" style={isDesktop ? { y: blobPurpleY } : undefined} />
 
-      {/* Outer: scroll fade + lift (desktop only) */}
       <motion.div style={isDesktop ? { y: wrapY, opacity: wrapOpacity } : undefined} className="hero__parallax-wrap">
-        {/* Inner: mouse parallax (desktop only) */}
         <motion.div style={isDesktop ? { x: mx, y: my } : undefined} className="hero__content">
 
           <motion.div
@@ -135,11 +130,11 @@ export default function Hero() {
           >
             <span className="hero__badge hero__badge--cyan">
               <Zap size={12} />
-              E-commerce de Alta Performance
+              {t.hero.badgeCyan}
             </span>
             <span className="hero__badge hero__badge--purple">
               <Brain size={12} />
-              Potencializado por IA
+              {t.hero.badgePurple}
             </span>
           </motion.div>
 
@@ -149,11 +144,11 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.14, ease }}
           >
-            <span className="gradient-text-silver">Consultoria</span> de E-commerce
+            <span className="gradient-text-silver">{t.hero.titleHighlight1}</span> {t.hero.titleRest1}
             <br />
-            em <span className="gradient-text">VTEX, Shopify</span> e Loja Integrada
+            {t.hero.titlePre2} <span className="gradient-text">VTEX, Shopify</span> {t.hero.titleRest2}
             <br />
-            que gera mais vendas com IA
+            {t.hero.titleLine3}
           </motion.h1>
 
           <motion.p
@@ -162,11 +157,11 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.28, ease }}
           >
-            Desenvolvimento, migração e otimização de lojas virtuais em{" "}
-            <strong style={{ color: "#fff" }}>VTEX, Shopify, Loja Integrada e NuvemShop</strong>{" "}
-            — com{" "}
-            <strong style={{ color: "#7B61FF" }}>Inteligência Artificial</strong> para
-            entregar mais rápido e converter mais.
+            {t.hero.subtitlePre}{" "}
+            <strong style={{ color: "#fff" }}>{t.hero.subtitleHighlight}</strong>{" "}
+            {t.hero.subtitleMid}{" "}
+            <strong style={{ color: "#7B61FF" }}>{t.hero.subtitleAi}</strong>{" "}
+            {t.hero.subtitlePost}
           </motion.p>
 
           <motion.div
@@ -176,16 +171,16 @@ export default function Hero() {
             transition={{ duration: 0.75, delay: 0.42, ease }}
           >
             <a
-              href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Quero%20uma%20consultoria%20gratuita%20com%20a%20Digital%20Black%20Rock."
+              href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Quero%20uma%20consultoria%20gratuita%20com%20a%20Digital%20Black%20Rock."
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--primary"
             >
               <MessageCircle size={18} />
-              Consultoria Gratuita
+              {t.hero.ctaPrimary}
             </a>
             <a href="#servicos" className="btn btn--secondary">
-              Ver Serviços
+              {t.hero.ctaSecondary}
               <ArrowRight size={18} />
             </a>
           </motion.div>
@@ -198,17 +193,17 @@ export default function Hero() {
           >
             <div className="hero__trust-item">
               <ShieldCheck size={16} style={{ color: "#00D4FF" }} />
-              <span>+50 clientes atendidos</span>
+              <span>{t.hero.trust[0]}</span>
             </div>
             <div className="hero__trust-dot" />
             <div className="hero__trust-item">
               <TrendingUp size={16} style={{ color: "#00D4FF" }} />
-              <span>+200 projetos entregues</span>
+              <span>{t.hero.trust[1]}</span>
             </div>
             <div className="hero__trust-dot" />
             <div className="hero__trust-item">
               <Brain size={16} style={{ color: "#7B61FF" }} />
-              <span>IA aplicada ao desenvolvimento</span>
+              <span>{t.hero.trust[2]}</span>
             </div>
           </motion.div>
 

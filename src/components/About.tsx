@@ -1,34 +1,11 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { Brain, Rocket, ShieldCheck, Handshake, MessageCircle } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const differentials = [
-  {
-    icon: Brain,
-    title: "IA no Desenvolvimento",
-    desc: "Aplicamos Inteligência Artificial para acelerar entregas, elevar performance e otimizar cada etapa do desenvolvimento.",
-    color: "#7B61FF",
-  },
-  {
-    icon: Rocket,
-    title: "Especialistas em E-commerce",
-    desc: "Time certificado em VTEX, Shopify e Loja Integrada — do zero ao resultado com estratégia e tecnologia de ponta.",
-    color: "#00D4FF",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Resultados Comprovados",
-    desc: "+200 projetos entregues, +50 clientes ativos e 98% de satisfação. Execução com qualidade e no prazo.",
-    color: "#7B61FF",
-  },
-  {
-    icon: Handshake,
-    title: "Parceria Estratégica",
-    desc: "Não somos apenas fornecedores — somos parceiros de crescimento que trabalham lado a lado com o seu time.",
-    color: "#00D4FF",
-  },
-];
+const icons = [Brain, Rocket, ShieldCheck, Handshake];
+const colors = ["#7B61FF", "#00D4FF", "#7B61FF", "#00D4FF"];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -43,6 +20,8 @@ const containerVariants = {
 };
 
 export default function About() {
+  const { t } = useLanguage();
+
   return (
     <section id="sobre" className="about">
       <div className="grid-pattern" style={{ position: "absolute", inset: 0, opacity: 0.5 }} />
@@ -55,15 +34,16 @@ export default function About() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease }}
         >
-          <span className="section__tag">Sobre Nós</span>
+          <span className="section__tag">{t.about.tag}</span>
           <h2 className="section__title">
-            Quem é a <span className="gradient-text">Digital Black Rock</span>
+            {t.about.titlePre} <span className="gradient-text">Digital Black Rock</span>
           </h2>
           <p className="section__subtitle">
-            Somos uma consultoria de e-commerce especializada, que combina{" "}
-            <strong style={{ color: "#fff" }}>experiência técnica</strong> e{" "}
-            <strong style={{ color: "#7B61FF" }}>Inteligência Artificial</strong>{" "}
-            para entregar resultados reais — mais rápido, com mais performance.
+            {t.about.subtitle.pre}{" "}
+            <strong style={{ color: "#fff" }}>{t.about.subtitle.highlight1}</strong>{" "}
+            {t.about.subtitle.mid}{" "}
+            <strong style={{ color: "#7B61FF" }}>{t.about.subtitle.highlight2}</strong>{" "}
+            {t.about.subtitle.post}
           </p>
         </motion.div>
 
@@ -74,15 +54,13 @@ export default function About() {
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {differentials.map((d) => {
-            const Icon = d.icon;
+          {t.about.differentials.map((d, i) => {
+            const Icon = icons[i];
+            const color = colors[i];
             return (
               <motion.div key={d.title} className="glass-card differential-card" variants={cardVariants}>
-                <div
-                  className="differential-card__icon"
-                  style={{ background: `${d.color}18` }}
-                >
-                  <Icon size={28} style={{ color: d.color }} />
+                <div className="differential-card__icon" style={{ background: `${color}18` }}>
+                  <Icon size={28} style={{ color }} />
                 </div>
                 <h3 className="differential-card__title">{d.title}</h3>
                 <p className="differential-card__desc">{d.desc}</p>
@@ -99,13 +77,13 @@ export default function About() {
           transition={{ duration: 0.6, ease }}
         >
           <a
-            href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20a%20Digital%20Black%20Rock."
+            href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20a%20Digital%20Black%20Rock."
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--primary"
           >
             <MessageCircle size={18} />
-            Falar com um especialista
+            {t.about.cta}
           </a>
         </motion.div>
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Globe, User, Mail, Phone, Send } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -22,6 +23,8 @@ interface Props {
 }
 
 export default function SiteAuditForm({ url, onBack, onSubmit }: Props) {
+  const { t } = useLanguage();
+  const f = t.audit.form;
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +54,7 @@ export default function SiteAuditForm({ url, onBack, onSubmit }: Props) {
       >
         <button className="audit-form__back" onClick={onBack} type="button">
           <ArrowLeft size={14} />
-          Alterar URL
+          {f.back}
         </button>
 
         <div className="audit-form__url-preview">
@@ -59,25 +62,18 @@ export default function SiteAuditForm({ url, onBack, onSubmit }: Props) {
           {displayUrl}
         </div>
 
-        <h2 className="audit-form__title">Quase lá! Onde enviamos o diagnóstico?</h2>
-        <p className="audit-form__subtitle">
-          Preencha abaixo para receber sua análise completa e recomendações personalizadas.
-        </p>
+        <h2 className="audit-form__title">{f.title}</h2>
+        <p className="audit-form__subtitle">{f.subtitle}</p>
 
         <form onSubmit={handleSubmit}>
           <div className="audit-form__field">
             <label htmlFor="audit-name" className="audit-form__label">
               <User size={13} style={{ display: "inline", marginRight: 5 }} />
-              Nome *
+              {f.name}
             </label>
             <input
-              id="audit-name"
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              placeholder="Seu nome completo"
+              id="audit-name" type="text" name="name" value={form.name}
+              onChange={handleChange} required placeholder={f.namePlaceholder}
               className="form-input"
             />
           </div>
@@ -85,16 +81,11 @@ export default function SiteAuditForm({ url, onBack, onSubmit }: Props) {
           <div className="audit-form__field">
             <label htmlFor="audit-email" className="audit-form__label">
               <Mail size={13} style={{ display: "inline", marginRight: 5 }} />
-              E-mail *
+              {f.email}
             </label>
             <input
-              id="audit-email"
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              placeholder="seu@email.com"
+              id="audit-email" type="email" name="email" value={form.email}
+              onChange={handleChange} required placeholder={f.emailPlaceholder}
               className="form-input"
             />
           </div>
@@ -102,43 +93,33 @@ export default function SiteAuditForm({ url, onBack, onSubmit }: Props) {
           <div className="audit-form__field">
             <label htmlFor="audit-phone" className="audit-form__label">
               <Phone size={13} style={{ display: "inline", marginRight: 5 }} />
-              WhatsApp *
+              {f.phone}
             </label>
             <input
-              id="audit-phone"
-              type="tel"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              required
-              placeholder="(11) 99999-9999"
+              id="audit-phone" type="tel" name="phone" value={form.phone}
+              onChange={handleChange} required placeholder={f.phonePlaceholder}
               className="form-input"
             />
           </div>
 
           <button
-            type="submit"
-            disabled={loading}
-            className="btn btn--primary"
+            type="submit" disabled={loading} className="btn btn--primary"
             style={{ width: "100%", justifyContent: "center", opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
           >
             {loading ? (
               <>
                 <div style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.9s linear infinite" }} />
-                Analisando...
+                {f.sending}
               </>
             ) : (
               <>
                 <Send size={17} />
-                Ver meu diagnóstico
+                {f.submit}
               </>
             )}
           </button>
 
-          <p className="audit-form__lgpd">
-            Ao enviar, você concorda em receber seu diagnóstico e possíveis contatos
-            da Digital Black Rock com sugestões de melhoria. Seus dados não são compartilhados.
-          </p>
+          <p className="audit-form__lgpd">{f.lgpd}</p>
         </form>
       </motion.div>
     </div>

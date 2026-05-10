@@ -1,14 +1,8 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { MessageCircle, ArrowRight, CheckCircle } from "lucide-react";
-
-const benefits = [
-  "Diagnóstico gratuito do seu e-commerce",
-  "Estratégia personalizada para o seu negócio",
-  "Equipe especializada em VTEX, Shopify e mais",
-  "Resultados mensuráveis e comprovados",
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -23,6 +17,8 @@ const containerVariants = {
 };
 
 export default function CtaBanner() {
+  const { t } = useLanguage();
+
   return (
     <section className="cta-banner">
       <div className="cta-banner__bg" />
@@ -40,7 +36,7 @@ export default function CtaBanner() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.55, ease }}
         >
-          🔥 Oferta Especial
+          {t.cta.badge}
         </motion.div>
 
         <motion.h2
@@ -50,10 +46,10 @@ export default function CtaBanner() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.75, delay: 0.1, ease }}
         >
-          Pronto para{" "}
-          <span className="gradient-text">multiplicar suas vendas</span>
+          {t.cta.titlePre}{" "}
+          <span className="gradient-text">{t.cta.titleHighlight}</span>
           <br />
-          no digital?
+          {t.cta.titlePost}
         </motion.h2>
 
         <motion.p
@@ -63,9 +59,9 @@ export default function CtaBanner() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, delay: 0.2, ease }}
         >
-          Agende agora uma{" "}
-          <strong style={{ color: "#fff" }}>consultoria gratuita</strong> com nossos
-          especialistas e descubra como transformar seu e-commerce em uma máquina de resultados.
+          {t.cta.subtitlePre}{" "}
+          <strong style={{ color: "#fff" }}>{t.cta.subtitleHighlight}</strong>{" "}
+          {t.cta.subtitlePost}
         </motion.p>
 
         <motion.div
@@ -75,7 +71,7 @@ export default function CtaBanner() {
           whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
         >
-          {benefits.map((b) => (
+          {t.cta.benefits.map((b) => (
             <motion.div key={b} className="cta-banner__benefit" variants={benefitVariants}>
               <CheckCircle size={16} style={{ color: "#00D4FF", flexShrink: 0 }} />
               <span>{b}</span>
@@ -91,16 +87,16 @@ export default function CtaBanner() {
           transition={{ duration: 0.65, delay: 0.1, ease }}
         >
           <a
-            href="https://wa.me/5511969683162?text=Ol%C3%A1!%20Quero%20agendar%20uma%20consultoria%20gratuita%20com%20a%20Digital%20Black%20Rock."
+            href="https://wa.me/5511982400853?text=Ol%C3%A1!%20Quero%20agendar%20uma%20consultoria%20gratuita%20com%20a%20Digital%20Black%20Rock."
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--primary btn--lg"
           >
             <MessageCircle size={20} />
-            Agendar Consultoria Gratuita
+            {t.cta.ctaPrimary}
           </a>
           <a href="#contato" className="btn btn--secondary btn--lg">
-            Enviar Mensagem
+            {t.cta.ctaSecondary}
             <ArrowRight size={18} />
           </a>
         </motion.div>
@@ -112,7 +108,7 @@ export default function CtaBanner() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          Sem compromisso • Resposta em até 24h • 100% gratuito
+          {t.cta.note}
         </motion.p>
 
       </div>
