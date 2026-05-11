@@ -426,7 +426,8 @@ async function saveLead(
     `;
     const typed = rows as unknown as { id: string }[];
     return typed[0]?.id ?? null;
-  } catch {
+  } catch (err) {
+    console.error("[saveLead] DB error:", err);
     return null;
   }
 }
@@ -467,8 +468,8 @@ async function saveAudit(
         ${JSON.stringify(ps.raw ?? null)}
       )
     `;
-  } catch {
-    // Non-fatal — user still gets the result
+  } catch (err) {
+    console.error("[saveAudit] DB error:", err);
   }
 }
 
