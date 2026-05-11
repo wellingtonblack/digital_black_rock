@@ -482,7 +482,6 @@ const CORS_HEADERS = {
 
 export const onRequestPost: (ctx: { request: Request; env: Env; waitUntil: (p: Promise<unknown>) => void }) => Promise<Response> =
   async ({ request, env, waitUntil }) => {
-    console.log("[analyze] invoked — DB_URL set:", !!env.DATABASE_URL, "| PAGESPEED set:", !!env.PAGESPEED_API_KEY);
     // Payload size guard (~10 KB)
     const contentLength = parseInt(request.headers.get("content-length") ?? "0", 10);
     if (contentLength > 10_240) {
