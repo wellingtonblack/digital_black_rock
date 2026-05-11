@@ -26,7 +26,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("dbr-lang") as Lang | null;
-    if (saved === "pt" || saved === "en") setLangState(saved);
+    if (saved === "pt" || saved === "en") {
+      setLangState(saved);
+    } else {
+      const browserLang = navigator.language || (navigator.languages && navigator.languages[0]) || "pt";
+      if (browserLang.toLowerCase().startsWith("en")) {
+        setLangState("en");
+      }
+    }
   }, []);
 
   useEffect(() => {
