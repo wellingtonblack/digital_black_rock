@@ -224,11 +224,11 @@
       },
       {
         review: '"Em menos de 3 semanas nossa loja Shopify estava no ar, com design profissional e integrações funcionando perfeitamente. Recomendo sem hesitar."',
-        author: "Diretor Comercial, Flueshop",
+        author: "Diretor Comercial, Ulla Sports",
       },
       {
         review: '"A migração do nosso e-commerce foi feita com zero interrupção. Time altamente técnico e extremamente organizado."',
-        author: "CTO, Cirilo Cabos",
+        author: "CTO, Venlibre",
       },
     ],
     form: {

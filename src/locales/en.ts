@@ -226,11 +226,11 @@ export const en: Translations = {
       },
       {
         review: '"In less than 3 weeks our Shopify store was live, with a professional design and integrations working perfectly. Highly recommend."',
-        author: "Commercial Director, Flueshop",
+        author: "Commercial Director, Ulla Sports",
       },
       {
         review: '"Our e-commerce migration was done with zero downtime. Highly technical and extremely organized team."',
-        author: "CTO, Cirilo Cabos",
+        author: "CTO, Venlibre",
       },
     ],
     form: {
