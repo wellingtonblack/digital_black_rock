@@ -50,9 +50,12 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   icons: {
-    icon: "/assets/logos/logo-full-2.png",
-    apple: "/assets/logos/logo-full-2.png",
-    shortcut: "/assets/logos/logo-full-2.png",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/assets/logos/logo-light.png" },
+    ],
+    apple: "/assets/logos/logo-light.png",
+    shortcut: "/favicon.svg",
   },
   verification: {
     google: "qyh-CcyYZW8gEDqqxZAroirMecU42GfymNvztATAtqc",
