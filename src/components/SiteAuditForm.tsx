@@ -65,7 +65,7 @@ export default function SiteAuditForm({ url, onBack, onSubmit }: Props) {
         <h2 className="audit-form__title">{f.title}</h2>
         <p className="audit-form__subtitle">{f.subtitle}</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="send-form-audit">
           <div className="audit-form__field">
             <label htmlFor="audit-name" className="audit-form__label">
               <User size={13} style={{ display: "inline", marginRight: 5 }} />
